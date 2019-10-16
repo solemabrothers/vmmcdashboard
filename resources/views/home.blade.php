@@ -9,10 +9,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    
+
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="    https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
@@ -25,10 +25,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{URL::asset('css/customcss.css')}}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
     <script src="//code.jquery.com/jquery-1.12.3.js"></script>
     <!-- Google Font: Source Sans Pro -->
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
@@ -48,10 +48,10 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    {{--<!-- jQuery library -->--}}
-    {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>--}}
+{{--<!-- jQuery library -->--}}
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>--}}
 
-    <!-- Latest minified bootstrap js -->
+<!-- Latest minified bootstrap js -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
@@ -62,13 +62,11 @@
 <div class="wrapper">
     <!-- Main Sidebar Container -->
     @include('layouts.sidebar');
-        <!-- /.sidebar-menu -->
+    <!-- /.sidebar-menu -->
 </div>
 <!-- Main content -->
 <section class="content" style="margin-top: -26px;">
     <!-- Your Page Content Here -->
-
-
     @yield('content')
 </section>
 <!-- ./wrapper -->
@@ -77,6 +75,15 @@
         $('#table').DataTable();
     } );
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('#mytables').DataTable();
+    } );
+</script>
+
+
+
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -89,8 +96,8 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- DataTables -->
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src ="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
 <!-- Bootstrap JavaScript -->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <!-- App scripts -->
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -107,3 +114,4 @@
 <script src="dist/js/demo.js"></script>
 </body>
 </html>
+<!-- style="min-height: 635px;margin-left: 180px;" -->

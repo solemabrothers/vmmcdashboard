@@ -22,7 +22,7 @@ class CircumscionPartnerController extends Controller
 		NumberMildDamageToPenis+NumberModerateDamageToPenis+NumberSevereDamageToPenis)'))->get();
 
 
-
+        
         echo'<pre>';
         print_r($clientsAffected);
 
@@ -31,38 +31,46 @@ class CircumscionPartnerController extends Controller
 
        public function numbersByAgeGroup()
     {
-        $start_week = Carbon::today()->startOfWeek();
-        $end_week = Carbon::today()->endOfWeek();
+        $below10 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBelow10');
+       $Between10And14 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween10And14');
+       $Between15And19 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween15And19');
+       $Between20And24 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween20And24');
+       $Between26And30 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween25And29');
+       $Between31And34= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween30And34');
+       $Between35And39= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween35And39');
+       $Between40And44= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween40And44');
+       $Above45= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->value(DB::raw("SUM(NumberCircumcisedBetween45And49+NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
+       
+        $below10= new PieChart('< 10',$below10);
+       $Between10And14= new PieChart('10-14',$Between10And14);
+       $Between15And19= new PieChart('15-19',$Between15And19);
+       $Between20And24= new PieChart('20-24',$Between20And24);
+       $Between26And30= new PieChart('25-29',$Between26And30);
+       $Between31And34= new PieChart('30-34',$Between31And34);
+       $Between35And39= new PieChart('35-39',$Between35And39);
+       $Between40And44= new PieChart('40-44',$Between40And44);
+       $Above45= new PieChart('>45',$Above45);
+       
 
-        $Below10 = DB::table('Circumcision')->whereBetween('SummaryDate',array($end_week,$start_week))->sum('NumberCircumcisedBelow10');
-        $Between10And14 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween10And14');
-        $Between15And19 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween15And19');
-        $Between20And24 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween20And24');
-        $Between26And30 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween25And29');
-        $Between31And34 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween30And34');
-        $Between35And39 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween35And39');
-        $Between40And44 = DB::table('Circumcision')->whereBetween('SummaryDate',array($start_week,$end_week))->sum('NumberCircumcisedBetween40And44');
+       $pichartArray= array($below10,$Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Above45);
 
-        $below10= new PieChart('Lessthan 10',$Below10);
-        $Between10And14= new PieChart('Between10And14',$Between10And14);
-        $Between15And19= new PieChart('Between15And19',$Between15And19);
-        $Between20And24= new PieChart('Between20And24',$Between20And24);
-        $Between26And30= new PieChart('Between26And30',$Between26And30);
-        $Between31And34= new PieChart('Between31And34',$Between31And34);
-        $Between35And39= new PieChart('Between35And39',$Between35And39);
-        $Between40And44= new PieChart('Between40And44',$Between40And44);
+      return $pichartArray;
 
-        $pichartArray= array($below10,$Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44);
+    }
+    //test the age categories functionality
+    public function getAgeCategories()
+    {
 
-       return $pichartArray;
-
-
+       $today= Carbon::today();
+       $yesterday=$today->subDays(7);
+       $category = DB::table('Circumcision')->where('SummaryDate','>=',$yesterday)->value(DB::raw("SUM(NumberCircumcisedBetween10And14 + NumberCircumcisedBetween15And19)"));
+       return $category;
     }
     public function hivStatusClients()
     {
         $status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,                                        
 		SUM(c.NumberCircumcised) As Clients,SUM(c.NumberHIVPositive) AS HIVPOstive, SUM(c.NumberHIVNegative) As HIVNegative
- FROM mets_vmmc.Circumcision c WHERE YEAR(SummaryDate)= 2018 group by monthname(c.SummaryDate) order by c.SummaryDate;');
+ FROM mets_vmmc.circumcision c WHERE YEAR(SummaryDate)=YEAR(CURDATE())  group by monthname(c.SummaryDate) order by c.SummaryDate;');
 
         for($i=0;$i<sizeof($status_of_Clients);$i++)
         {
@@ -88,8 +96,7 @@ class CircumscionPartnerController extends Controller
         array_push($clientsstatus,$clientspositive);
         array_push($clientsstatus,$clientsnegative);
         return json_encode($clientsstatus,JSON_NUMERIC_CHECK);
-//        return $status_of_Clients;
-
     }
 
 }
+// /Users/ssolomon/Projects/vmmcdashboard/app/Http/Controllers/CircumscionPartnerController.php

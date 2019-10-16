@@ -8,17 +8,17 @@ use App\Models\ImplementingPartner;
 use Illuminate\Http\Request;
 use DB;
 use PhpParser\Node\Expr\Array_;
-use App\Http\Controllers\FacilityController;
 use Carbon\Carbon;
 
 class ImplementingPartnerController extends Controller
 {
 
-
+    //return all the facilities supported by perticular facilities;
+   
     public function NumbersByIp()
     {
       $ip_performance=DB::select('SELECT Ip.Ip_name, SUM(NumberCircumcised) As Ip_performance FROM mets_vmmc.circumcision c, mets_vmmc.implementingpartner Ip
-  WHERE c.ImplementingPartner=Ip.IP_ID and YEARWEEK(SummaryDate)=YEARWEEK(NOW() - INTERVAL 1 WEEK) group by implementingpartner')  ;
+  WHERE c.ImplementingPartner=Ip.IP_ID and  YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK) group by implementingpartner')  ;
        for($i=0;$i<sizeof($ip_performance);$i++)
        {
            $ip_name[] = $ip_performance[$i]->Ip_name;
@@ -61,6 +61,21 @@ class ImplementingPartnerController extends Controller
         print_r( $ip_performance_by_agegroup);
 }
 
+public function weeklyAdverseEffects()
+{
+    $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma) AS Severe,
+    SUM(c.NumberMildExcessiveBleeding)+
+                +SUM(c.NumberMildSwellingHaematoma)
+                 +SUM(c.NumberModerateInfection)
+                   As ClientsAffected
+      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id 
+      AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by facility,implementingpartner
+      HAVING  ClientsAffected !=0 OR Severe!=0');
+    
+ return $HIVpositiveclients;
+
+}
+
 public function AdverseEffects()
 {
         $adverse_effects = DB::select('SELECT concat( date_format( MAKEDATE(YEAR(c.SummaryDate), 1) + INTERVAL QUARTER(c.SummaryDate) QUARTER 
@@ -74,7 +89,7 @@ public function AdverseEffects()
                 SUM(c.NumberMildInfection)+SUM(c.NumberMildPain)+SUM(c.NumberMildSwellingHaematoma)+SUM(c.NumberModerateAnaestheticRelatedEvent)+
                 SUM(c.NumberModerateDamageToPenis)+SUM(c.NumberModerateExcessiveBleeding)+SUM(c.NumberModerateExcessiveSkinRemoved)+SUM(c.NumberModerateInfection)+
                 SUM(c.NumberModerateSwellingHaematoma) AS Moderate                
-                 FROM mets_vmmc.Circumcision c  WHERE "quarter" IS NOT NULL AND YEAR(c.SummaryDate)=2018 group by quarter(c.SummaryDate) order by c.SummaryDate;');
+                 FROM mets_vmmc.circumcision c  WHERE "quarter" IS NOT NULL AND YEAR(c.SummaryDate)=YEAR(CURDATE()) group by quarter(c.SummaryDate) order by c.SummaryDate;');
 
          for($i=0;$i<sizeof($adverse_effects);$i++)
          {
@@ -101,3 +116,4 @@ public function AdverseEffects()
 
 
 }
+// /Users/ssolomon/Projects/vmmcdashboard/app/Http/Controllers/ImplementingPartnerController.php

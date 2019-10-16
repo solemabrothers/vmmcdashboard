@@ -10,6 +10,8 @@ use Doctrine\DBAL\Driver\PDOConnection;
 use Illuminate\Http\Request;
 use DB;
 use PDO;
+use App\Models\PieChart;
+
 use Illuminate\Database\SqlServerConnection;
 use Doctrine\DBAL\Driver\SQLSrv;
 
@@ -20,16 +22,12 @@ class DateManipulation extends Controller
    public function index()
    {
 
-       $servername ='196.43.147.249';
-       $connectioninfo = array("Database"=>'METS',"UID"=>'mets',"PWD"=>'1234Smc*');
-
-       $connection = sqlsrv_connect($servername,$connectioninfo);
-       $pdo = new PDO('sqlsrv:Server=196.43.147.249;Database=METS','mets','1234Smc*');
+       $pdo = new PDO('sqlsrv:Server=196.43.147.249,1433;Database=METS','mets','1234Smc*');
        $sql = "SELECT * FROM METS.dbo.Circumcision";
        $stmt = $pdo->prepare($sql);
        $stmt->execute();
 
-       $fp = fopen('D:/Projects/mets_vmmc/Documents/export.txt', 'w');
+       $fp = fopen('export.txt', 'w');
        while ($row = $stmt->fetch(PDO::FETCH_NUM)){
            fputcsv($fp, array_values($row));
        }
@@ -38,8 +36,8 @@ class DateManipulation extends Controller
     }
 public function getMysqlData()
 {
-    $con = mysqli_connect('localhost','openmrs','openmrs','mets_vmmc');
-    $sql = 'LOAD DATA INFILE "D:/Projects/mets_vmmc/Documents/export.txt"
+    $con = mysqli_connect('vmmc.mets.or.ug','vmmc_user','vmmc_user','mets_vmmc');
+    $sql = 'LOAD DATA LOCAL INFILE "export.txt"
       IGNORE INTO TABLE Circumcision   FIELDS TERMINATED by  \',\' OPTIONALLY ENCLOSED BY \'"\'  LINES TERMINATED BY \'\n\'
       (OID, FacilityType, Funder, ImplementingPartner,
       CallDate, SummaryDate, FacilityContactPerson, NerveCentreContact, NumberCircumcised, NumberCircumcisedBelow13,
@@ -65,7 +63,7 @@ public function getMysqlData()
     public function insertdata()
     {
        try{
-            $pdo = new PDO('sqlsrv:Server=196.43.147.249;Database=METS','mets','1234Smc*');
+            $pdo = new PDO('sqlsrv:Server=196.43.147.249,1433;Database=METS','mets','1234Smc*');
              $sql = "SELECT * FROM METS.dbo.Circumcision LIMIT 200 ";
              $stmt = $pdo->prepare($sql);
              $stmt->execute();
