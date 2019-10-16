@@ -20,25 +20,111 @@ class Controller extends BaseController
     //populate the homepage
     public function index()
     {
-//       index $ips = DB::table('implementingPartner')->get();
-//        $districts=DB::table('District')->get();
-        $current_Date = Carbon::today();
-
-        $numbersCircumscissedaily=DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c WHERE YEARWEEK(SummaryDate)=YEARWEEK(NOW()- INTERVAL 1 WEEK)');
-        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c WHERE YEARWEEK(SummaryDate)=YEARWEEK(NOW()- INTERVAL 1 WEEK)');
-        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c WHERE YEARWEEK(SummaryDate)=YEARWEEK(NOW()- INTERVAL 1 WEEK)');
-
-        $SeverelyAffected =DB::select('  
-  SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+ 
+     $ips = DB::table('implementingpartner')->get();
+     $regions=DB::table('region')->get();
+    $districts=DB::table('district')->get();
+       // $current_Date = 28-07-2018;
+ $numbersCircumscissedaily=DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
+        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c  WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
+        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
+        
+        $SeverelyAffected =DB::select(' SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+ 
  +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+ 
- SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis) As ClientsAffected
-  FROM mets_vmmc.circumcision c WHERE YEARWEEK(SummaryDate)=YEARWEEK(NOW() - INTERVAL 1 WEEK)');
+ SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberMildExcessiveBleeding)+
+ +SUM(c.NumberMildSwellingHaematoma)
+  +SUM(c.NumberModerateInfection) As ClientsAffected
+  FROM mets_vmmc.circumcision c WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
+  $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma) 
++SUM(c.NumberSevereAnaestheticRelatedEvent)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberSevereExcessiveBleeding)
++SUM(c.NumberSevereInfection)+SUM(c.NumberSeverePain)AS Severe,
+    SUM(c.NumberMildExcessiveBleeding)+SUM(c.NumberMildSwellingHaematoma)+SUM(c.NumberModerateInfection)
+    +SUM(c.NumberMildAnaestheticRelatedEvent)+SUM(c.NumberMildDamageToPenis)+SUM(c.NumberMildExcessiveSkinRemoved)
+    +SUM(c.NumberMildPain)As ClientsAffected
+      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id 
+      AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by facility,implementingpartner
+      HAVING  ClientsAffected !=0 OR Severe!=0');
+
+$HIVpositiveclients =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive 
+FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartner Ip, mets_vmmc.district d
+ WHERE  c.Facility=f.Facility AND c.ImplementingPartner= Ip.IP_ID  AND f.district_id= d.district_id
+  AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by c.Facility,c.ImplementingPartner
+  HAVING positive !=0');
+
+        $monthly_data = DB::select('SELECT  District_name,
+         SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
+         SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
+         SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
+         SUM(IF (MONTH(c.SummaryDate) = 4, c.NumberCircumcised, 0)) AS April ,
+         SUM(IF (MONTH(c.SummaryDate) = 5, c.NumberCircumcised, 0)) AS May  ,
+         SUM(IF (MONTH(c.SummaryDate) = 6, c.NumberCircumcised, 0)) AS June ,
+         SUM(IF (MONTH(c.SummaryDate) = 7, c.NumberCircumcised, 0)) AS July ,
+         SUM(IF (MONTH(c.SummaryDate) = 8, c.NumberCircumcised, 0)) AS August,
+         SUM(IF (MONTH(c.SummaryDate) = 9, c.NumberCircumcised, 0)) AS September,
+         SUM(IF (MONTH(c.SummaryDate) = 10, c.NumberCircumcised, 0)) AS October,
+         SUM(IF (MONTH(c.SummaryDate) = 11, c.NumberCircumcised, 0)) AS November,
+
+
+         
+         SUM(c.NumberCircumcised) as  DistrictTotal FROM mets_vmmc.circumcision c, facility f, district d WHERE
+          c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=YEAR(CURDATE()) GROUP BY f.district_id
+          UNION ALL
+        SELECT   "TOTALS" as District_name,
+                SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
+         SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
+         SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
+         SUM(IF (MONTH(c.SummaryDate) = 4, c.NumberCircumcised, 0)) AS April ,
+         SUM(IF (MONTH(c.SummaryDate) = 5, c.NumberCircumcised, 0)) AS May  ,
+         SUM(IF (MONTH(c.SummaryDate) = 6, c.NumberCircumcised, 0)) AS June ,
+         SUM(IF (MONTH(c.SummaryDate) = 7, c.NumberCircumcised, 0)) AS July ,
+         SUM(IF (MONTH(c.SummaryDate) = 8, c.NumberCircumcised, 0)) AS August,
+         SUM(IF (MONTH(c.SummaryDate) = 9, c.NumberCircumcised, 0)) AS September,
+         SUM(IF (MONTH(c.SummaryDate) = 10, c.NumberCircumcised, 0)) AS October,
+         SUM(IF (MONTH(c.SummaryDate) = 11, c.NumberCircumcised, 0)) AS November,
+
+                SUM(c.NumberCircumcised) AS TOTAL
+        FROM  mets_vmmc.circumcision c where  YEAR(c.SummaryDate)=YEAR(CURDATE()) ');
+      
+      $previous_week = strtotime("-1 week +1 day");
+         $start_week = strtotime("last sunday midnight",$previous_week);
+          $end_week = strtotime("next saturday",$start_week);
+         $start_week = date("d-M-Y",$start_week);
+        $end_week = date("d-M-Y",$end_week);
+
+        return view('layouts.home', compact('districts','ips','start_week','regions','end_week','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson', 'numbersCircumscissedaily','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
+    }
 
 
 
+    public function getfilteredData(Request $request)
+    {
+        // $ips = DB::table('ImplementingPartner')->get();
+        $ips = DB::table('implementingpartner')->get();
+        $regions=DB::table('region')->get();
+        $districts=DB::table('district')->get();
 
-        $monthly_data = DB::select('SELECT 
-IFNULL(District_name, \'TOTAL\') AS District_name,
+        $ip_name = $request->input('ips');
+        $today= Carbon::today();
+        $yesterday=$today->subWeek();
+       $sql= "SELECT SUM(circumcision.NumberCircumcised) As ipweeklyperformance  FROM `mets_vmmc`.`circumcision`
+                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
+       $ipweeklyperformance = DB::select(DB::raw($sql));
+
+        $sql_query="SELECT SUM(circumcision.NumberHIVNegative) As ipnegativeclients  FROM `mets_vmmc`.`circumcision`
+                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
+        $numbersHIVnegative=DB::select(DB::raw($sql_query));
+
+        $sql_positive="SELECT SUM(circumcision.NumberHIVPositive) As ippositiveclients  FROM `mets_vmmc`.`circumcision`
+                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
+        $numbersHIVpositive=DB::select(DB::raw($sql_positive));
+
+        $clientsaffected ="SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+ 
+                        +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+ 
+                      SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis) As ClientsAffected
+                    FROM mets_vmmc.circumcision c WHERE c.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND c.ImplementingPartner=$ip_name ";
+        $clientsseverelyaffected=DB::select(DB::raw($clientsaffected));
+
+        $monthlydistrictPerformance ="SELECT 
+IFNULL(District_name, 'TOTAL') AS District_name,
  SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
  SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
  SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
@@ -49,68 +135,14 @@ IFNULL(District_name, \'TOTAL\') AS District_name,
    SUM(c.NumberCircumcised) as  DistrictTotal
 
 FROM mets_vmmc.Circumcision c, facility f, District d WHERE
-  c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=2018 GROUP BY f.district_id WITH ROLLUP');
-        return view('layouts.index', compact('districts','ips','SeverelyAffected','monthly_data','modelObjectJson', 'numbersCircumscissedaily','numbersHIVnegative','numbersHIVpositive','clientsAffected'));
-    }
-    public function getfilteredData(Request $request)
-    {
-        $ips = DB::table('implementing_partner')->get();
-        $districts=DB::table('districts')->get();
-       $clientscircumscissedbyunit=0;
-        $ip_name = $request->input('ip');
-        $district_id=$request->input('district');
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
+  c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=2018  AND c.implementingpartner=$ip_name GROUP BY f.district_id WITH ROLLUP";
+        $monthly_data = DB::select(DB::raw($monthlydistrictPerformance));
+         return view('layouts.filterdata', compact('ipweeklyperformance','numbersHIVnegative','monthly_data','ips','numbersHIVpositive','clientsseverelyaffected'));
 
-        if($ip_name=='allIps')
-        {
-            $clients_hiv_positive_ip =DB::table('circumscission')->where('ImplementingPartner','=',$ip_name)->whereBetween('SummaryDate',[$start_date,$end_date])->sum('NumberHIVPositive');
-            $clients_hiv_negative_ip=DB::table('circumscission')->where('ImplementingPartner','=',$ip_name)->whereBetween('SummaryDate',[$start_date,$end_date])->sum('NumberHIVNegative');
-            $district_facilities = DB::table('facility')->where('Districts_District_ID','=',$district_id)->distinct()->get();
-            for($i=0;$i<sizeof($district_facilities);$i++)
-            {
-                $district_facility_name = DB::table('facility')->select('Facility_name')->where('Facility_ID','=',$district_facilities[$i]->Facility_ID)->first();
-                $clientscircumscissed =DB::table('circumscission')->where('Facility_Facility_ID','=',$district_facilities[$i]->Facility_ID)->whereBetween('SummaryDate',[$start_date,$end_date])->sum('NumberCircumcised');
-                $facilitymodel = new AnalysisGraphs($district_facility_name,$clientscircumscissed,$district_id);
-                $clientscircumscissedbyunit+=$clientscircumscissed;
-                $facilitynumbers[]=$facilitymodel;
 
-            }
 
-        }
-        elseif($district_id =='alldistricts')
-        {
-            $clientscircumscissedbyunit = DB::table('circumscission')->where('ImplementingPartner','=',$ip_name)->sum('NumberCircumcised');
-            $clients_hiv_positive_ip =DB::table('circumscission')->where('ImplementingPartner','=',$ip_name)->sum('NumberHIVPositive');
-            $clients_hiv_negative_ip=DB::table('circumscission')->where('ImplementingPartner','=',$ip_name)->sum('NumberHIVNegative');
 
-            $facilitybyip = DB::table('circumscission')->select('Facility_Facility_Id')->where('implementingPartner','=',$ip_name)->distinct()->get();
-            for($i=0;$i<sizeof($facilitybyip);$i++)
-            {
-                $facilityname = DB::table('facility')->select('Facility_name')->where('Facility_ID','=',$facilitybyip[$i]->Facility_Facility_Id)->first();
-                $circumscission = DB::table('circumscission')->where([['Facility_Facility_ID','=',$facilitybyip[$i]->Facility_Facility_Id],['ImplementingPartner','=',$ip_name]])
-                   ->whereBetween('SummaryDate',[$start_date,$end_date])->sum('NumberCircumcised');
-                $facilitymodel = new AnalysisGraphs($facilityname,$circumscission,$facilitybyip[$i]->Facility_Facility_Id);
-                $facilitynumbers[]=$facilitymodel;
-
-            }
-        }
-        else{
-            $district_facilities = DB::table('facility')->where('Districts_District_ID','=',$district_id)->distinct()->get();
-            for($i=0;$i<sizeof($district_facilities);$i++)
-            {
-                $district_facility_name = DB::table('facility')->select('Facility_name')->where('Facility_ID','=',$district_facilities[$i]->Facility_ID)->first();
-                $clients_hiv_positive_ip =DB::table('circumscission')->where([['Facility_Facility_ID','=',$district_facilities[$i]->Facility_ID],['ImplementingPartner','=',$ip_name]])->sum('NumberHIVPositive');
-                $clients_hiv_negative_ip=DB::table('circumscission')->where([['Facility_Facility_ID','=',$district_facilities[$i]->Facility_ID],['ImplementingPartner','=',$ip_name]])->sum('NumberHIVNegative');
-                $circumscission = DB::table('circumscission')->where([['Facility_Facility_ID','=',$district_facilities[$i]->Facility_ID],['ImplementingPartner','=',$ip_name]])
-                    ->sum('NumberCircumcised');
-                $facilitymodel = new AnalysisGraphs($district_facility_name,$circumscission,$district_facilities[$i]->Facility_ID);
-                $facilitynumbers[]=$facilitymodel;
-            }
-
-        }
-
-        return view('layouts.filters', compact( 'districts','ips','clientscircumscissedbyunit','clients_hiv_positive_ip','clients_hiv_negative_ip','facilitynumbers'));
     }
 
 }
+

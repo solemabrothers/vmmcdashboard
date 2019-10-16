@@ -1,0 +1,80 @@
+body {
+    background-color: powderblue;
+}
+#content
+{
+    min-height: 726px;
+    margin-left: 180px;
+}
+#districttable{
+    margin-right: 0.5px;
+}
+
+#sidebar
+{
+    min-height: 324px;
+    width: 180px;
+}
+#infobox{
+    height: 90px;
+}
+#footnotes{
+    font-size: 6px;
+    color:#268ff5;
+}
+#hivmodal
+{
+    margin-left: 200px;
+    margin-bottom: 200px;
+}
+#title{
+    font-family: "Times New Roman";
+    font-size: 10px;
+    color: #5C5A5A;
+    background-color: #fafafa;
+    padding: 5px 5px;
+}
+#filtertable{
+
+    border-collapse: collapse;
+
+}
+#filtertitle{
+    font-family: "Times New Roman";
+    font-size: 10px;
+    color: rgb(44, 44, 233);
+    background-color: #fafafa;
+    padding: 5px 20px;
+
+}
+#filterbutton{
+    alignment: left;
+}
+#weekly{
+    font-size: 25px;
+    font-weight: bold;
+}
+#label {
+    float: left
+}
+span {
+    display: table-cell;
+    padding: 0 0 0 5px
+}
+input {
+    width: 100%
+}
+#boxcontent{
+    font-weight:normal;
+    font-size: 16px;
+}
+#boxnumbers{
+    font-weight: bolder;
+    font-size: 30px;
+    color: grey;
+}
+h4 {
+    font-size: 20px;
+    padding: 10px 0px 0px 20px;
+}
+/* /Users/ssolomon/Projects/vmmcdashboard/public/css/customcss.css */
