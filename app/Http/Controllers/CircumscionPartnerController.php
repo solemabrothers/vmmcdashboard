@@ -22,7 +22,7 @@ class CircumscionPartnerController extends Controller
 		NumberMildDamageToPenis+NumberModerateDamageToPenis+NumberSevereDamageToPenis)'))->get();
 
 
-        
+
         echo'<pre>';
         print_r($clientsAffected);
 
@@ -31,41 +31,63 @@ class CircumscionPartnerController extends Controller
 
        public function numbersByAgeGroup()
     {
-        $below10 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBelow10');
-       $Between10And14 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween10And14');
-       $Between15And19 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween15And19');
-       $Between20And24 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween20And24');
-       $Between26And30 = DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween25And29');
-       $Between31And34= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween30And34');
-       $Between35And39= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween35And39');
-       $Between40And44= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->sum('NumberCircumcisedBetween40And44');
-       $Above45= DB::table('circumcision')->whereRaw('YEARWEEK(SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)')->value(DB::raw("SUM(NumberCircumcisedBetween45And49+NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
-       
-        $below10= new PieChart('< 10',$below10);
-       $Between10And14= new PieChart('10-14',$Between10And14);
-       $Between15And19= new PieChart('15-19',$Between15And19);
-       $Between20And24= new PieChart('20-24',$Between20And24);
-       $Between26And30= new PieChart('25-29',$Between26And30);
-       $Between31And34= new PieChart('30-34',$Between31And34);
-       $Between35And39= new PieChart('35-39',$Between35And39);
-       $Between40And44= new PieChart('40-44',$Between40And44);
-       $Above45= new PieChart('>45',$Above45);
-       
+       $Between10And14 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween10And14');
+       $Between15And19 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween15And19');
+       $Between20And24 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween20And24');
+       $Between26And30 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween25And29');
+       $Between31And34= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween30And34');
+       $Between35And39= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween35And39');
+       $Between40And44= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween40And44');
+       $Above45= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->value(DB::raw("SUM(NumberCircumcisedBetween45And49+NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
 
-       $pichartArray= array($below10,$Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Above45);
+        $Between10And14target = DB::table('ipmechanismtargets')->sum('10<14');
+        $Between15And19target = DB::table('ipmechanismtargets')->sum('15<19');
+        $Between20And24target = DB::table('ipmechanismtargets')->sum('20<24');
+        $Between26And30target = DB::table('ipmechanismtargets')->sum('25<29');
+        $Between31And34target= DB::table('ipmechanismtargets')->sum('30<34');
+        $Between35And39target= DB::table('ipmechanismtargets')->sum('35<39');
+        $Between40And44target= DB::table('ipmechanismtargets')->sum('40<49');
+        $Above45target= DB::table('ipmechanismtargets')->sum('50>');
 
-      return $pichartArray;
+       $Between10And14= new PieChart('10-14',$Between10And14,$Between10And14target);
+       $Between15And19= new PieChart('15-19',$Between15And19,$Between15And19target);
+       $Between20And24= new PieChart('20-24',$Between20And24,$Between20And24target);
+       $Between26And30= new PieChart('25-29',$Between26And30,$Between26And30target);
+       $Between31And34= new PieChart('30-34',$Between31And34,$Between31And34target);
+       $Between35And39= new PieChart('35-39',$Between35And39,$Between35And39target);
+       $Between40And44= new PieChart('40-44',$Between40And44,$Between40And44target);
+       $Above45= new PieChart('>45',$Above45,$Above45target);
+
+       $pichartArray= array($Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Above45);
+        for($i=0;$i<sizeof($pichartArray);$i++)
+         {
+            $agecategorynames[] =$pichartArray[$i]->objectname;
+        }
+        for($i=0;$i<sizeof($pichartArray);$i++)
+        {
+            $agecategoryperformance[] =$pichartArray[$i]->objectvalue;
+        }
+        for($i=0;$i<sizeof($pichartArray);$i++)
+        {
+            $agecategorytarget[] =$pichartArray[$i]->target;
+        }
+        $ageperformance = array();
+
+        array_push($ageperformance,$agecategorynames);
+        array_push($ageperformance,$agecategoryperformance);
+        array_push($ageperformance,$agecategorytarget);
+        return json_encode($ageperformance,JSON_NUMERIC_CHECK);
+
+      return $ageperformance;
 
     }
-    //test the age categories functionality
-    public function getAgeCategories()
-    {
 
-       $today= Carbon::today();
-       $yesterday=$today->subDays(7);
-       $category = DB::table('Circumcision')->where('SummaryDate','>=',$yesterday)->value(DB::raw("SUM(NumberCircumcisedBetween10And14 + NumberCircumcisedBetween15And19)"));
-       return $category;
-    }
+
+
+
+
+
+
     public function hivStatusClients()
     {
         $status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,                                        
@@ -99,4 +121,4 @@ class CircumscionPartnerController extends Controller
     }
 
 }
-// /Users/ssolomon/Projects/vmmcdashboard/app/Http/Controllers/CircumscionPartnerController.php
+
