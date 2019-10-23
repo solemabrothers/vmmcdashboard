@@ -37,29 +37,7 @@ class ImplementingPartnerController extends Controller
      return $ipz_result;
 
     }
-    public function Ip_Category()
-{
-        $ip_performance_by_agegroup=DB::select('SELECT ip.Ip_name, SUM(c.NumberCircumcisedBelow10) As Lessthan10, 
-       SUM(c.NumberCircumcisedBetween10And14) As Between11AND14,
-       SUM(c.NumberCircumcisedBetween15And19)+SUM(c.NumberCircumcisedBetween20And24)+SUM(c.NumberCircumcisedBetween26And29) As PivotAge,
-       SUM(c.NumberCircumcisedBetween31And34)+SUM(c.NumberCircumcisedBetween35And39)+SUM(c.NumberCircumcisedBetween40And44)+SUM(c.NumberCircumcisedBetween45And49)+
-       SUM(c.NumberCircumcisedBetween45And49)+SUM(c.NumberCircumcisedBetween50And54)+SUM(c.NumberCircumcisedBetween55And59)+SUM(c.NumberCircumcised60andabove) As Above30
-       
-       FROM mets_vmmc.circumscission  c, mets_vmmc.implementing_partner ip WHERE c.ImplementingPartner=ip.IP_ID group by c.ImplementingPartner');
 
-        $category['name']='Levels';
-        $series1['name']='IDI';
-        $series2['name']='BAYLOR';
-        $series3['name']='URC';
-        for($i=0;$i< sizeof($ip_performance_by_agegroup);$i++)
-        {
-
-        }
-
-
-        echo'<pre>';
-        print_r( $ip_performance_by_agegroup);
-}
 
 
 //IP Mechanism Performance by targets

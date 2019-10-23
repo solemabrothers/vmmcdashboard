@@ -236,7 +236,6 @@ $(document).ready(function()
                 },
                 {
                     type:'column',
-                    color: 'Blue',
                     name:'Performance',
                     data:agecategoryperformance
                 }]
