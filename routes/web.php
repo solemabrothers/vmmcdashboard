@@ -26,6 +26,8 @@ Route::get('/daily', 'CircumscionPartnerController@Circumscissionbyweek');
 Route::get('/ipnumbers','ImplementingPartnerController@NumbersByIp');
 Route::get('/ipcategories','ImplementingPartnerController@Ip_Category');
 Route::get('/adverseefffects','ImplementingPartnerController@AdverseEffects');
+Route::get('/ipmechanismtargetandperformance','ImplementingPartnerController@IpMechanismPerfomanceandTarget');
+
 Route::get('/facilitynumbers', 'FacilityController@getFacilityNumbers');
 Route::get('/getfilteredData', 'Controller@getfilteredData');
 Route::get('/getfacilityNumbersByIp', 'RegionController@getCircurimscissedClientsinFacilityByIp');

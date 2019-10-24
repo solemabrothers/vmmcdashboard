@@ -15,15 +15,15 @@
     @include('layouts.header')
     <!-- Content Header (Page header) -->
         <!-- Main content -->
-        <div class="card" id="title">:TOTAL WEEKLY PERFORMANCE FROM {{$start_week}} TO {{$end_week}}</div>
+        <div class="card" id="title">:TOTAL  PERFORMANCE FOR COP18</div>
         <div class="row" id="districttable">
             <div class="col-lg-3">
                 <div class="info-box">
                     <span class="info-box-icon bg-info elevation-1"><i class="fa fa-stethoscope"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text" id="boxcontent">Clients Circumcised</span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($numbersCircumscissedaily[0]->total)}}</span>
+                        <span class="info-box-text" id="boxcontent">% Total Performance</span>
+                        <span class="info-box-number" id="boxnumbers">{{($totalperformance)}}%</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -87,11 +87,9 @@
         </div>
         <!-- /.row -->
 
-        <div class="card" id="title">:WEEKLY REPORTING FROM {{$start_week}} TO {{$end_week}}</div>
+        <div class="card" id="title">:IP Mechanism Perfomance FOR COP18</div>
         <div class="row">
-            <!-- <div class="container" id="districttable"> -->
-
-            <div class="col-lg-6" id="implementingpattners">
+            <div class="col-lg-6" id="ipmechanismtargetandperformance">
             </div>
             <div class="col-lg-6" id="categories">
 
@@ -99,17 +97,17 @@
 
         </div>
 
-        <!-- <div class="row" style="padding-top:15px"  >
-        <div class="col-lg-6" id="hivstatus">
+{{--         <div class="row" style="padding-top:15px"  >--}}
+{{--        <div class="col-lg-6" id="hivstatus">--}}
 
-            </div>
-            <div class="col-lg-6" id="adverseeffects">
+{{--            </div>--}}
+{{--            <div class="col-lg-6" id="ipmechanismtargetandperformance">--}}
 
-            </div>
+{{--            </div>--}}
 
 
-        </div>
--->
+{{--        </div>--}}
+
 
         <div class="row">
             <div class="panel-body">

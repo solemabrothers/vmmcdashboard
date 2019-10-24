@@ -14,7 +14,7 @@ class ImplementingPartnerController extends Controller
 {
 
     //return all the facilities supported by perticular facilities;
-   
+
     public function NumbersByIp()
     {
       $ip_performance=DB::select('SELECT Ip.Ip_name, SUM(NumberCircumcised) As Ip_performance FROM mets_vmmc.circumcision c, mets_vmmc.implementingpartner Ip
@@ -37,46 +37,38 @@ class ImplementingPartnerController extends Controller
      return $ipz_result;
 
     }
-    public function Ip_Category()
+
+
+
+//IP Mechanism Performance by targets
+public function IpMechanismPerfomanceandTarget()
 {
-        $ip_performance_by_agegroup=DB::select('SELECT ip.Ip_name, SUM(c.NumberCircumcisedBelow10) As Lessthan10, 
-       SUM(c.NumberCircumcisedBetween10And14) As Between11AND14,
-       SUM(c.NumberCircumcisedBetween15And19)+SUM(c.NumberCircumcisedBetween20And24)+SUM(c.NumberCircumcisedBetween26And29) As PivotAge,
-       SUM(c.NumberCircumcisedBetween31And34)+SUM(c.NumberCircumcisedBetween35And39)+SUM(c.NumberCircumcisedBetween40And44)+SUM(c.NumberCircumcisedBetween45And49)+
-       SUM(c.NumberCircumcisedBetween45And49)+SUM(c.NumberCircumcisedBetween50And54)+SUM(c.NumberCircumcisedBetween55And59)+SUM(c.NumberCircumcised60andabove) As Above30
-       
-       FROM mets_vmmc.circumscission  c, mets_vmmc.implementing_partner ip WHERE c.ImplementingPartner=ip.IP_ID group by c.ImplementingPartner');
+    $performanceandtarget=DB::select('SELECT Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget from implementingpartner
+                                                       inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
+                                                       inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
+where c.SummaryDate >= \'2018-10-01 00:00:00\' group by ImplementingPartner');
+     for($i=0;$i<sizeof($performanceandtarget);$i++)
+     {
+         $ipmechanismname[] = $performanceandtarget[$i]-> Ipmechanismname;
+     }
+    for($i=0;$i<sizeof($performanceandtarget);$i++)
+    {
+        $ipmechanismtarget[] = $performanceandtarget[$i]-> ipmechanismtarget;
+    }
+    for($i=0;$i<sizeof($performanceandtarget);$i++)
+    {
+        $ipmechanismperformance[] = $performanceandtarget[$i]-> ipmechanismperformance;
+    }
+    $result = array();
 
-        $category['name']='Levels';
-        $series1['name']='IDI';
-        $series2['name']='BAYLOR';
-        $series3['name']='URC';
-        for($i=0;$i< sizeof($ip_performance_by_agegroup);$i++)
-        {
-
-        }
-
-
-        echo'<pre>';
-        print_r( $ip_performance_by_agegroup);
-}
-
-public function weeklyAdverseEffects()
-{
-    $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma) AS Severe,
-    SUM(c.NumberMildExcessiveBleeding)+
-                +SUM(c.NumberMildSwellingHaematoma)
-                 +SUM(c.NumberModerateInfection)
-                   As ClientsAffected
-      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id 
-      AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by facility,implementingpartner
-      HAVING  ClientsAffected !=0 OR Severe!=0');
-    
- return $HIVpositiveclients;
+    array_push($result,$ipmechanismname);
+    array_push($result,$ipmechanismtarget);
+    array_push($result,$ipmechanismperformance);
+    return json_encode($result,JSON_NUMERIC_CHECK);
 
 }
 
-public function AdverseEffects()
+    public function AdverseEffects()
 {
         $adverse_effects = DB::select('SELECT concat( date_format( MAKEDATE(YEAR(c.SummaryDate), 1) + INTERVAL QUARTER(c.SummaryDate) QUARTER 
                                        - INTERVAL    1 QUARTER, \'%b \'), \' - \', 
@@ -116,4 +108,3 @@ public function AdverseEffects()
 
 
 }
-// /Users/ssolomon/Projects/vmmcdashboard/app/Http/Controllers/ImplementingPartnerController.php

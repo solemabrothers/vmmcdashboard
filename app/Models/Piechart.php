@@ -14,16 +14,38 @@ class PieChart
 
     public $objectname;
     public $objectvalue;
+    public $target;
 
     /**
      * PieChart constructor.
      * @param $objectname
      * @param $objectvalue
      */
-    public function __construct($objectname, $objectvalue)
+//    public function __construct($objectname, $objectvalue)
+//    {
+//        $this->objectname = $objectname;
+//        $this->objectvalue = $objectvalue;
+//    }
+    public function __construct($objectname, $objectvalue,$target)
     {
         $this->objectname = $objectname;
         $this->objectvalue = $objectvalue;
+        $this->target = $target;
+    }
+    /**
+     * @return mixed
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * @param mixed $target
+     */
+    public function setTarget($target): void
+    {
+        $this->target = $target;
     }
 
     /**

@@ -23,31 +23,29 @@ class Controller extends BaseController
      $ips = DB::table('implementingpartner')->get();
      $regions=DB::table('region')->get();
     $districts=DB::table('district')->get();
-       // $current_Date = 28-07-2018;
- $numbersCircumscissedaily=DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
-        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c  WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
-        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
-        
-        $SeverelyAffected =DB::select(' SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+ 
- +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+ 
+        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c   where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+
+        $SeverelyAffected =DB::select(' SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+
+ +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+
  SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberMildExcessiveBleeding)+
  +SUM(c.NumberMildSwellingHaematoma)
   +SUM(c.NumberModerateInfection) As ClientsAffected
-  FROM mets_vmmc.circumcision c WHERE YEARWEEK(c.SummaryDate) = YEARWEEK(NOW() - INTERVAL 1 WEEK)');
-  $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma) 
+  FROM mets_vmmc.circumcision c   where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+  $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma)
 +SUM(c.NumberSevereAnaestheticRelatedEvent)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberSevereExcessiveBleeding)
 +SUM(c.NumberSevereInfection)+SUM(c.NumberSeverePain)AS Severe,
     SUM(c.NumberMildExcessiveBleeding)+SUM(c.NumberMildSwellingHaematoma)+SUM(c.NumberModerateInfection)
     +SUM(c.NumberMildAnaestheticRelatedEvent)+SUM(c.NumberMildDamageToPenis)+SUM(c.NumberMildExcessiveSkinRemoved)
     +SUM(c.NumberMildPain)As ClientsAffected
-      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id 
-      AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by facility,implementingpartner
+      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
+      AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by facility,implementingpartner
       HAVING  ClientsAffected !=0 OR Severe!=0');
 
-$HIVpositiveclients =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive 
+$HIVpositiveclients =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive
 FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartner Ip, mets_vmmc.district d
  WHERE  c.Facility=f.Facility AND c.ImplementingPartner= Ip.IP_ID  AND f.district_id= d.district_id
-  AND YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2) group by c.Facility,c.ImplementingPartner
+  AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by c.Facility,c.ImplementingPartner
   HAVING positive !=0');
 
         $monthly_data = DB::select('SELECT  District_name,
@@ -62,9 +60,6 @@ FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartn
          SUM(IF (MONTH(c.SummaryDate) = 9, c.NumberCircumcised, 0)) AS September,
          SUM(IF (MONTH(c.SummaryDate) = 10, c.NumberCircumcised, 0)) AS October,
          SUM(IF (MONTH(c.SummaryDate) = 11, c.NumberCircumcised, 0)) AS November,
-
-
-         
          SUM(c.NumberCircumcised) as  DistrictTotal FROM mets_vmmc.circumcision c, facility f, district d WHERE
           c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=YEAR(CURDATE()) GROUP BY f.district_id
           UNION ALL
@@ -83,14 +78,17 @@ FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartn
 
                 SUM(c.NumberCircumcised) AS TOTAL
         FROM  mets_vmmc.circumcision c where  YEAR(c.SummaryDate)=YEAR(CURDATE()) ');
-      
-      $previous_week = strtotime("-1 week +1 day");
-         $start_week = strtotime("last sunday midnight",$previous_week);
-          $end_week = strtotime("next saturday",$start_week);
-         $start_week = date("d-M-Y",$start_week);
-        $end_week = date("d-M-Y",$end_week);
 
-        return view('layouts.home', compact('districts','ips','start_week','regions','end_week','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson', 'numbersCircumscissedaily','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
+
+        $totalnumbercircumscised =DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c
+where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+
+        $totaltarget =DB::select('SELECT SUM(TARGET) as target from mets_vmmc.ipmechanismtargets');
+
+
+        $totalperformance =number_format(($totalnumbercircumscised[0]->total/$totaltarget[0]->target)*100,2,'.','');
+
+        return view('layouts.home', compact('districts','ips','totalperformance','regions','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
     }
 
 
