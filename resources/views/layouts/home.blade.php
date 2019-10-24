@@ -17,7 +17,7 @@
         <!-- Main content -->
         <div class="card" id="title">:TOTAL  PERFORMANCE FOR COP18</div>
         <div class="row" id="districttable">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="info-box">
                     <span class="info-box-icon bg-info elevation-1"><i class="fa fa-stethoscope"></i></span>
 
@@ -29,8 +29,32 @@
                 </div>
                 <!-- /.info-box -->
             </div>
+            <div class="col-lg-2">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fa fa-stethoscope"></i></span>
 
-            <div class="col-lg-3">
+                    <div class="info-box-content">
+                        <span class="info-box-text" id="boxcontent">Male Circumscised</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($totalnumbercircumscised[0]->total)}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="col-lg-2">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fa fa-stethoscope"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text" id="boxcontent">Total Target</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($totaltarget[0]->target)}}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+
+            <div class="col-lg-2">
                 <div class="info-box mb-3">
                     <span class="info-box-icon bg-success elevation-1"><i class="fa fa-users"></i></span>
 
@@ -45,7 +69,7 @@
             </div>
             <div class="clearfix hidden-md-up"></div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="info-box mb-3" id="infobox">
                     <span class=" info-box-icon bg-danger elevation-1"><i class="fa fa-user-md"></i></span>
 
@@ -62,7 +86,7 @@
             </div>
             <!-- /.col -->
             <!-- /.col -->
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="info-box mb-3"id="infobox" >
                     <span class=" info-box-icon bg-warning elevation-1"><i class="fa fa-wheelchair"></i></span>
 
@@ -110,47 +134,47 @@
 
 
         <div class="row">
+            <div class="col-12">
             <div class="panel-body">
-                <h4 style="padding: 0px;">MONTHLY DISTRICT PERFORMANCE  FOR 2019</h4>
+                <h4 style="padding: 0px;">IP MECHANISM  PERFORMANCE  BY AGE GROUP FOR COP18</h4>
+                <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="mytables">
                     <thead>
-                    <tr class="table-primary"><th style="width: 100px;">District Name</th>
-                        <th style="width:100px">Jan</th>
-                        <th style="width:100px"> Feb</th>
-                        <th style="width: 100px;">Mar</th>
-                        <th style="width: 100px;">Apr</th>
-                        <th style="width: 100px;">May</th>
-                        <th style="width: 100px;">June</th>
-                        <th style="width: 100px;">July</th>
-                        <th style="width: 100px;">Aug</th>
-                        <th style="width: 100px;">Sept</th>
-                        <th style="width: 100px;">Oct</th>
-                        <th style="width: 100px;">Nov</th>
-                        <th>Total</th></tr>
+                    <tr class="table-primary"><th style="width: 100px;">IP Mechanism</th>
+                        <th ><10</th>
+                        <th >10<14</th>
+                        <th >15<19</th>
+                        <th >20<24</th>
+                        <th >25<29</th>
+                        <th >30<34</th>
+                        <th >35<39</th>
+                        <th >40<49</th>
+                        <th >50></th>
+
                     </thead>
                     <tbody>
                     <tr>
                         @foreach($monthly_data as $data)
-                            <td>{{$data->District_name}}</td>
-                            <td>{{$data->January}}</td>
-                            <td>{{$data->February}}</td>
-                            <td>{{$data->March}}</td>
-                            <td>{{$data->April}}</td>
-                            <td>{{$data->May}}</td>
-                            <td>{{$data->June}}</td>
-                            <td>{{$data->July}}</td>
-                            <td>{{$data->August}}</td>
-                            <td>{{$data->September}}</td>
-                            <td>{{$data->October}}</td>
-                            <td>{{$data->November}}</td>
-                            <td>{{$data->DistrictTotal}}</td>
+                            <td>{{$data->ipmechanism}}</td>
+                            <td>{{$data->category9}}</td>
+                            <td>{{$data->category1}}</td>
+                            <td>{{$data->category2}}</td>
+                            <td>{{$data->category3}}</td>
+                            <td>{{$data->category4}}</td>
+                            <td>{{$data->category5}}</td>
+                            <td>{{$data->category6}}</td>
+                            <td>{{$data->category7}}</td>
+                            <td>{{$data->category8}}</td>
+
                     </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
+            </div>
 
 
+        </div>
         </div>
     </div>
     </div>

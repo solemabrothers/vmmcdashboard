@@ -227,6 +227,18 @@ $(document).ready(function()
                 }
 
             },
+            plotOptions: {
+
+                series: {
+                    colorByPoint: false,
+                    allowPointSelect:true,
+                    dataLabels:{
+                        enabled:true,
+                    },
+                    showInLegend:true
+                }
+
+            },
             series:[
                 {
                     type:'column',
