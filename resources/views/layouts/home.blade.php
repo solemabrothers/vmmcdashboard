@@ -22,8 +22,8 @@
                     <span class="info-box-icon bg-info elevation-1"><i class="fa fa-stethoscope"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text" id="boxcontent">Percentage Total Performance</span>
-                        <span class="info-box-number" id="boxnumbers">{{($totalperformance)}}</span>
+                        <span class="info-box-text" id="boxcontent">% Total Performance</span>
+                        <span class="info-box-number" id="boxnumbers">{{($totalperformance)}}%</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
