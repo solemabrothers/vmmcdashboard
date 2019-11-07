@@ -48,36 +48,14 @@ FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartn
   AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by c.Facility,c.ImplementingPartner
   HAVING positive !=0');
 
-        $monthly_data = DB::select('SELECT  District_name,
-         SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
-         SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
-         SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
-         SUM(IF (MONTH(c.SummaryDate) = 4, c.NumberCircumcised, 0)) AS April ,
-         SUM(IF (MONTH(c.SummaryDate) = 5, c.NumberCircumcised, 0)) AS May  ,
-         SUM(IF (MONTH(c.SummaryDate) = 6, c.NumberCircumcised, 0)) AS June ,
-         SUM(IF (MONTH(c.SummaryDate) = 7, c.NumberCircumcised, 0)) AS July ,
-         SUM(IF (MONTH(c.SummaryDate) = 8, c.NumberCircumcised, 0)) AS August,
-         SUM(IF (MONTH(c.SummaryDate) = 9, c.NumberCircumcised, 0)) AS September,
-         SUM(IF (MONTH(c.SummaryDate) = 10, c.NumberCircumcised, 0)) AS October,
-         SUM(IF (MONTH(c.SummaryDate) = 11, c.NumberCircumcised, 0)) AS November,
-         SUM(c.NumberCircumcised) as  DistrictTotal FROM mets_vmmc.circumcision c, facility f, district d WHERE
-          c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=YEAR(CURDATE()) GROUP BY f.district_id
-          UNION ALL
-        SELECT   "TOTALS" as District_name,
-                SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
-         SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
-         SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
-         SUM(IF (MONTH(c.SummaryDate) = 4, c.NumberCircumcised, 0)) AS April ,
-         SUM(IF (MONTH(c.SummaryDate) = 5, c.NumberCircumcised, 0)) AS May  ,
-         SUM(IF (MONTH(c.SummaryDate) = 6, c.NumberCircumcised, 0)) AS June ,
-         SUM(IF (MONTH(c.SummaryDate) = 7, c.NumberCircumcised, 0)) AS July ,
-         SUM(IF (MONTH(c.SummaryDate) = 8, c.NumberCircumcised, 0)) AS August,
-         SUM(IF (MONTH(c.SummaryDate) = 9, c.NumberCircumcised, 0)) AS September,
-         SUM(IF (MONTH(c.SummaryDate) = 10, c.NumberCircumcised, 0)) AS October,
-         SUM(IF (MONTH(c.SummaryDate) = 11, c.NumberCircumcised, 0)) AS November,
-
-                SUM(c.NumberCircumcised) AS TOTAL
-        FROM  mets_vmmc.circumcision c where  YEAR(c.SummaryDate)=YEAR(CURDATE()) ');
+        $monthly_data = DB::select('SELECT  i.Ip_name as ipmechanism,SUM(c.NumberCircumcisedBelow10) as category9, SUM(c.NumberCircumcisedBetween10And14) as category1,SUM(c.NumberCircumcisedBetween15And19)as category2,
+SUM(c.NumberCircumcisedBetween20And24) as category3,SUM(c.NumberCircumcisedBetween25And29) as category4,SUM(c.NumberCircumcisedBetween30And34) as category5,
+SUM(c.NumberCircumcisedBetween35And39) as category6,SUM(c.NumberCircumcisedBetween40And44) + SUM(NumberCircumcisedBetween45And49)as category7,
+SUM(c.NumberCircumcisedBetween50And54)+ SUM(c.NumberCircumcisedBetween55And59)+ SUM(c.NumberCircumcised60andabove) as category8
+from circumcision c
+inner join implementingpartner i on c.ImplementingPartner = i.IP_ID
+where c.SummaryDate between \'2018-10-01\' AND \'2019-09-30\'
+group by IP_ID');
 
 
         $totalnumbercircumscised =DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c
@@ -87,8 +65,8 @@ where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
 
 
         $totalperformance =number_format(($totalnumbercircumscised[0]->total/$totaltarget[0]->target)*100,2,'.','');
-
-        return view('layouts.home', compact('districts','ips','totalperformance','regions','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
+//     return $monthly_data;
+       return view('layouts.home', compact('districts','ips','totalperformance','totaltarget','totalnumbercircumscised','regions','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
     }
 
 
