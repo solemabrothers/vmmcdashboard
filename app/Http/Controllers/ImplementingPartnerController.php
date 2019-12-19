@@ -47,6 +47,33 @@ public function IpMechanismPerfomanceandTarget()
                                                        inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
                                                        inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
 where c.SummaryDate >= \'2018-10-01 00:00:00\' group by ImplementingPartner');
+    $districtperformance=DB::select('SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
+AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
+      AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by implementingpartner,d.district_id');
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $ip_id[] = $districtperformance[$i]-> IP_ID;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $district_id[] = $districtperformance[$i]-> district_id;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $district_name[] = $districtperformance[$i]-> District_name;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $districtvalues[] = $districtperformance[$i]-> totalperformance;
+    }
+
+    $districtarray = array();
+
+    array_push($districtarray,$ip_id);
+    array_push($districtarray,$district_id);
+    array_push($districtarray,$district_name);
+    array_push($districtarray,$districtvalues);
+
      for($i=0;$i<sizeof($performanceandtarget);$i++)
      {
          $ipmechanismname[] = $performanceandtarget[$i]-> Ipmechanismname;
@@ -64,8 +91,44 @@ where c.SummaryDate >= \'2018-10-01 00:00:00\' group by ImplementingPartner');
     array_push($result,$ipmechanismname);
     array_push($result,$ipmechanismtarget);
     array_push($result,$ipmechanismperformance);
-    return json_encode($result,JSON_NUMERIC_CHECK);
 
+    $combinedarray=array();
+    array_push($combinedarray,$result);
+    array_push($combinedarray,$districtarray);
+   return json_encode($result,JSON_NUMERIC_CHECK);
+// return $combinedarray[1][];
+}
+public function getIpperformnacebydistrict()
+{
+    $districtperformance=DB::select('SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
+AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
+      AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by implementingpartner,d.district_id');
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $ip_id[] = $districtperformance[$i]-> IP_ID;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $district_id[] = $districtperformance[$i]-> district_id;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $district_name[] = $districtperformance[$i]-> District_name;
+    }
+    for($i=0;$i<sizeof($districtperformance);$i++)
+    {
+        $districtvalues[] = $districtperformance[$i]-> totalperformance;
+    }
+
+    $districtarray = array();
+
+    array_push($districtarray,$ip_id);
+    array_push($districtarray,$district_id);
+    array_push($districtarray,$district_name);
+    array_push($districtarray,$districtvalues);
+
+//    return json_encode($districtarray,JSON_NUMERIC_CHECK);
+    return $districtperformance;
 }
 
     public function AdverseEffects()
@@ -102,6 +165,30 @@ where c.SummaryDate >= \'2018-10-01 00:00:00\' group by ImplementingPartner');
          array_push($result,$moderate);
         return json_encode($result,JSON_NUMERIC_CHECK);
 }
+
+    public function IpMechanismdrilldowntesting()
+    {
+        $performanceandtarget=DB::select('SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget from implementingpartner
+                                                       inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
+                                                       inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
+where c.SummaryDate >= \'2019-10-01 00:00:00\' AND t.Year_of_target=\'2020\' group by ImplementingPartner');
+        $districtperformance=DB::select('SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
+AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
+      AND c.SummaryDate >= \'2019-10-01\'  group by implementingpartner,d.district_id');
+
+        $facilityperformance=DB::select('SELECT d.district_id,facility_name, SUM(NumberCircumcised) as facilitydata from mets_vmmc.circumcision c
+                                        inner join facility f on c.Facility=f.Facility
+                                        inner join district d on f.district_id = d.district_id
+                                        WHERE c.SummaryDate >= \'2019-10-01\'
+                                        group by f.Facility,d.district_id order by district_id');
+
+
+        $combinedarray=array();
+        array_push($combinedarray,$performanceandtarget);
+        array_push($combinedarray,$districtperformance);
+        array_push($combinedarray,$facilityperformance);
+        return json_encode($combinedarray,JSON_NUMERIC_CHECK);
+    }
 
 
 

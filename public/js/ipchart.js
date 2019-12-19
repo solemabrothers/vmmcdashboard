@@ -1,13 +1,13 @@
 $(document).ready(function()
 {
-    $.getJSON("ipnumbers", function($ipz_result) {
+    $.getJSON("", function($ipz_result) {
 
         var categories = $ipz_result[0]
         var data= $ipz_result[1]
         var options={
             chart: {
 
-                renderTo:'implementingpattners'
+                renderTo:''
             },
 
             title: {
@@ -59,84 +59,6 @@ $(document).ready(function()
     });
 
 })
-$(document).ready(function() {
-
-    var options = {
-        chart: {
-            renderTo: '',
-            type: 'column'
-        },
-        title: {
-            text: 'Clients Categorised By Age group ',
-            x: 10 //center
-        },
-        subtitle: {
-            text: '',
-            x: -20
-        },
-        xAxis: {
-            categories: []
-        },
-        yAxis: {
-            title: {
-                text: 'Number of Clients'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        colors: [
-            '#4572A7',
-            '#AA4643',
-            '#89A54E',
-            '#80699B',
-            '#3D96AE',
-            '#DB843D',
-            '#92A8CD',
-            '#A47D7C',
-            '#B5CA92'
-        ],
-        plotOptions: {
-
-            series: {
-                colorByPoint: true,
-                allowPointSelect:true,
-                dataLabels:{
-                    enabled:false,
-                },
-                showInLegend:true
-            }
-
-        },
-        legend: {
-            layout: 'center',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 100,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
-        },
-        series: []
-    };
-    $.getJSON("categoriesByAgegroup", function(data) {
-        var series={
-            name:'Client Age Groups',
-            data:[]
-        }
-        for(i in data)
-        {
-            options.xAxis.categories.push(data[i].objectname);
-            series.data.push(JSON.parse(data[i].objectvalue));
-            }
-        options.series.push(series);
-        chart = new Highcharts.Chart(options);
-    });
-});
 
 
  $(document).ready(function()
@@ -150,7 +72,7 @@ $(document).ready(function() {
         var options={
             chart: {
                 type:'column',
-                renderTo:'ipmechanismtargetandperformance',
+                renderTo:'',
                 borderWidth:1
             },
 
@@ -190,14 +112,45 @@ $(document).ready(function() {
             }, {
                 type:'column',
                 name: 'Performance',
-                data:ipmechanismperformance,
-            }]
+                data:[
+                    {
+                        x:"IDI Kampala",
+                        y: 68622,
+                        drilldown: "idi"
+                    },
+                    {
+
+                        y: 56524,
+                        drilldown: "rhsp"
+                    },
+                    {
+                        y: 48919,
+                        drilldown: "baylor"
+                    },
+                    {
+                        y: 21300,
+                        drilldown: "taso"
+                    },
+                    {
+
+                        y: 59484,
+                        drilldown: "mildmay"
+                    },
+                    {
+
+                        y: 68856,
+                        drilldown: "idiwest"
+                    },
+
+                ]
+            }],
+
         };
        chart = new Highcharts.Chart(options);
 
     });
 
-})
+});
 
 $(document).ready(function()
 {
@@ -206,7 +159,6 @@ $(document).ready(function()
         var categories = ageperformance[0]
         var agecategoryperformance= ageperformance[1]
         var $agecategorytarget = ageperformance[2]
-        console.log(categories)
         var options={
             chart: {
 
@@ -259,86 +211,107 @@ $(document).ready(function()
 
     });
 
-})
+});
 
-$(document).ready(function() {
 
-    var options = {
+$(document).ready(function()
+{
+    // Create the chart
+    Highcharts.chart('devicesused', {
         chart: {
-            renderTo: 'categories',
             type: 'column'
         },
         title: {
-            text: 'Clients Categorised By Age group ',
-            x: 10 //center
+            text: 'IP Mechanism Targets and  Performance'
         },
         subtitle: {
-            text: '',
-            x: -20
+            text: 'Click Device to view Facilities using Devices'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
         },
         xAxis: {
-            categories: []
+            type: 'category'
         },
         yAxis: {
             title: {
-                text: 'Number of Clients'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        colors: [
-            '#4572A7',
-            '#AA4643',
-            '#89A54E',
-            '#80699B',
-            '#3D96AE',
-            '#DB843D',
-            '#92A8CD',
-            '#A47D7C',
-            '#B5CA92'
-        ],
-        plotOptions: {
-
-            series: {
-                colorByPoint: true,
-                allowPointSelect:true,
-                dataLabels:{
-                    enabled:false,
-                },
-                showInLegend:true
+                text: 'Number Circumscised by Method used'
             }
 
         },
         legend: {
-            layout: 'center',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 100,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
+            enabled: false
         },
-        series: []
-    };
-    $.getJSON("categoriesByAgegroup", function(agegrouptargets) {
-        var series={
-            name:'Client Age Groups',
-            data:[]
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                }
+            }
+        },
+
+        tooltip: {
+        },
+
+        series: [
+            {
+                type:'column',
+                color:'Green',
+                name: 'Target',
+                data:[
+                    {
+                        name:'Surgical',
+                        y:315241
+                    },
+                    {
+                        name:'Device',
+                        y:176,
+                        drilldown:'device'
+                    }
+                ]
+
+            }
+        ],
+        drilldown: {
+            series: [
+                {
+                    name: "Device",
+                    id: "device",
+                    data: [
+                        [
+                             "Kisenyi Health Centre",
+                            34
+                        ],
+                        [
+                            "IDI Omugo Health Centre",
+                            15
+                        ],
+                        [
+                            "IDI Rhino Camp Health Centre IV",
+                            34
+                        ],
+                        [
+                            "Luwero Health Centre IV.",
+                            60
+                        ],
+                        [
+                            "IDI Buwambo HC IV",
+                            32
+                        ],
+                        [
+                            "Kakumiro HCIV",
+                            1
+                        ]
+                    ]
+                }
+            ]
         }
-        for(i in data)
-        {
-            options.xAxis.categories.push(data[i].objectname);
-            series.data.push(JSON.parse(data[i].objectvalue));
-        }
-        options.series.push(series);
-        chart = new Highcharts.Chart(options);
     });
-});
+
+})
 
 
 

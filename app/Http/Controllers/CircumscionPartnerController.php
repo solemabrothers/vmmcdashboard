@@ -31,22 +31,25 @@ class CircumscionPartnerController extends Controller
 
        public function numbersByAgeGroup()
     {
-       $Between10And14 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween10And14');
-       $Between15And19 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween15And19');
-       $Between20And24 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween20And24');
-       $Between26And30 = DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween25And29');
-       $Between31And34= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween30And34');
-       $Between35And39= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween35And39');
-       $Between40And44= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->sum('NumberCircumcisedBetween40And44');
-       $Above45= DB::table('circumcision')->whereRaw('SummaryDate between \'2018-10-01\' and \'2019-09-30\'')->value(DB::raw("SUM(NumberCircumcisedBetween45And49+NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
+       $Between10And14 = DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween10And14');
+       $Between15And19 = DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween15And19');
+       $Between20And24 = DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween20And24');
+       $Between26And30 = DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween25And29');
+       $Between31And34= DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween30And34');
+       $Between35And39= DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween35And39');
+        $Between40And44= DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween40And44');
+        $Between45And49= DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->sum('NumberCircumcisedBetween45And49');
+        $Above45= DB::table('circumcision')->whereRaw('SummaryDate >= \'2019-10-01\'')->value(DB::raw("SUM(NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
 
-        $Between10And14target = DB::table('ipmechanismtargets')->sum('10<14');
-        $Between15And19target = DB::table('ipmechanismtargets')->sum('15<19');
-        $Between20And24target = DB::table('ipmechanismtargets')->sum('20<24');
-        $Between26And30target = DB::table('ipmechanismtargets')->sum('25<29');
-        $Between31And34target= DB::table('ipmechanismtargets')->sum('30<34');
-        $Between35And39target= DB::table('ipmechanismtargets')->sum('35<39');
-        $Between40And44target= DB::table('ipmechanismtargets')->sum('40<49');
+        $Between10And14target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('10<14');
+        $Between15And19target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('15<19');
+        $Between20And24target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('20<24');
+        $Between26And30target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('25<29');
+        $Between31And34target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('30<34');
+        $Between35And39target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('35<39');
+        $Between40And44target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('40<44');
+        $Between45And49target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('45<49');
+
         $Above45target= DB::table('ipmechanismtargets')->sum('50>');
 
        $Between10And14= new PieChart('10-14',$Between10And14,$Between10And14target);
@@ -56,9 +59,11 @@ class CircumscionPartnerController extends Controller
        $Between31And34= new PieChart('30-34',$Between31And34,$Between31And34target);
        $Between35And39= new PieChart('35-39',$Between35And39,$Between35And39target);
        $Between40And44= new PieChart('40-44',$Between40And44,$Between40And44target);
-       $Above45= new PieChart('>45',$Above45,$Above45target);
+        $Between45And49= new PieChart('45-49',$Between45And49,$Between45And49target);
 
-       $pichartArray= array($Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Above45);
+        $Above45= new PieChart('>45',$Above45,$Above45target);
+
+       $pichartArray= array($Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Between45And49,$Above45);
         for($i=0;$i<sizeof($pichartArray);$i++)
          {
             $agecategorynames[] =$pichartArray[$i]->objectname;
@@ -78,7 +83,7 @@ class CircumscionPartnerController extends Controller
         array_push($ageperformance,$agecategorytarget);
         return json_encode($ageperformance,JSON_NUMERIC_CHECK);
 
-      return $ageperformance;
+      //return $ageperformance;
 
     }
 
@@ -90,7 +95,7 @@ class CircumscionPartnerController extends Controller
 
     public function hivStatusClients()
     {
-        $status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,                                        
+        $status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,
 		SUM(c.NumberCircumcised) As Clients,SUM(c.NumberHIVPositive) AS HIVPOstive, SUM(c.NumberHIVNegative) As HIVNegative
  FROM mets_vmmc.circumcision c WHERE YEAR(SummaryDate)=YEAR(CURDATE())  group by monthname(c.SummaryDate) order by c.SummaryDate;');
 

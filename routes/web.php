@@ -27,6 +27,8 @@ Route::get('/ipnumbers','ImplementingPartnerController@NumbersByIp');
 Route::get('/ipcategories','ImplementingPartnerController@Ip_Category');
 Route::get('/adverseefffects','ImplementingPartnerController@AdverseEffects');
 Route::get('/ipmechanismtargetandperformance','ImplementingPartnerController@IpMechanismPerfomanceandTarget');
+Route::get('/districtperformance','ImplementingPartnerController@getIpperformnacebydistrict');
+Route::get('/drilldowns','ImplementingPartnerController@IpMechanismdrilldowntesting');
 
 Route::get('/facilitynumbers', 'FacilityController@getFacilityNumbers');
 Route::get('/getfilteredData', 'Controller@getfilteredData');

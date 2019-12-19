@@ -23,15 +23,15 @@ class Controller extends BaseController
      $ips = DB::table('implementingpartner')->get();
      $regions=DB::table('region')->get();
     $districts=DB::table('district')->get();
-        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c   where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
-        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+        $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c   where c.SummaryDate >= \'2019-10-01\'');
+        $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  where c.SummaryDate >= \'2019-10-01\'');
 
         $SeverelyAffected =DB::select(' SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+
  +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+
  SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberMildExcessiveBleeding)+
  +SUM(c.NumberMildSwellingHaematoma)
   +SUM(c.NumberModerateInfection) As ClientsAffected
-  FROM mets_vmmc.circumcision c   where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+  FROM mets_vmmc.circumcision c   where c.SummaryDate >= \'2019-10-01\'');
   $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma)
 +SUM(c.NumberSevereAnaestheticRelatedEvent)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberSevereExcessiveBleeding)
 +SUM(c.NumberSevereInfection)+SUM(c.NumberSeverePain)AS Severe,
@@ -39,13 +39,13 @@ class Controller extends BaseController
     +SUM(c.NumberMildAnaestheticRelatedEvent)+SUM(c.NumberMildDamageToPenis)+SUM(c.NumberMildExcessiveSkinRemoved)
     +SUM(c.NumberMildPain)As ClientsAffected
       FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
-      AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by facility,implementingpartner
+      AND c.SummaryDate >= \'2019-10-01\'  group by facility,implementingpartner
       HAVING  ClientsAffected !=0 OR Severe!=0');
 
 $HIVpositiveclients =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive
 FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartner Ip, mets_vmmc.district d
  WHERE  c.Facility=f.Facility AND c.ImplementingPartner= Ip.IP_ID  AND f.district_id= d.district_id
-  AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by c.Facility,c.ImplementingPartner
+  AND c.SummaryDate >= \'2019-10-01\' group by c.Facility,c.ImplementingPartner
   HAVING positive !=0');
 
         $monthly_data = DB::select('SELECT  i.Ip_name as ipmechanism,SUM(c.NumberCircumcisedBelow10) as category9, SUM(c.NumberCircumcisedBetween10And14) as category1,SUM(c.NumberCircumcisedBetween15And19)as category2,
@@ -54,14 +54,14 @@ SUM(c.NumberCircumcisedBetween35And39) as category6,SUM(c.NumberCircumcisedBetwe
 SUM(c.NumberCircumcisedBetween50And54)+ SUM(c.NumberCircumcisedBetween55And59)+ SUM(c.NumberCircumcised60andabove) as category8
 from circumcision c
 inner join implementingpartner i on c.ImplementingPartner = i.IP_ID
-where c.SummaryDate between \'2018-10-01\' AND \'2019-09-30\'
+where c.SummaryDate >= \'2019-10-01\'
 group by IP_ID');
 
 
         $totalnumbercircumscised =DB::select('SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c
-where c.SummaryDate between \'2018-10-01\' and \'2019-09-30\'');
+where c.SummaryDate >= \'2019-10-01\'');
 
-        $totaltarget =DB::select('SELECT SUM(TARGET) as target from mets_vmmc.ipmechanismtargets');
+        $totaltarget =DB::select('SELECT SUM(TARGET) as target from ipmechanismtargets t  where t.Year_of_target=\'2020\'');
 
 
         $totalperformance =number_format(($totalnumbercircumscised[0]->total/$totaltarget[0]->target)*100,2,'.','');

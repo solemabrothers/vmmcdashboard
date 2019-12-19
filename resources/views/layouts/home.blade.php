@@ -113,24 +113,20 @@
 
         <div class="card" id="title">:IP Mechanism Perfomance FOR COP18</div>
         <div class="row">
-            <div class="col-lg-6" id="ipmechanismtargetandperformance">
+            <div class="col-lg-12" id="ipmechanismtargetandperformance">
             </div>
-            <div class="col-lg-6" id="categories">
 
-            </div>
 
         </div>
 
-{{--         <div class="row" style="padding-top:15px"  >--}}
-{{--        <div class="col-lg-6" id="hivstatus">--}}
+         <div class="row" style="padding-top:15px"  >
+             <div class="col-lg-6" id="categories">
 
-{{--            </div>--}}
-{{--            <div class="col-lg-6" id="ipmechanismtargetandperformance">--}}
+             </div>
+        <div class="col-lg-6" id="devicesused">
+            </div>
 
-{{--            </div>--}}
-
-
-{{--        </div>--}}
+        </div>
 
 
         <div class="row">
