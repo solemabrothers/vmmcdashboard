@@ -46,13 +46,13 @@ $(document).ready(function()
                 drilldown:district_ids
             })
         }
-        console.log(districtdata)
         Highcharts.chart('ipmechanismtargetandperformance', {
             chart: {
                 type: 'column',
+                borderWidth: 1,
             },
             title: {
-                text: 'IP Mechanism Targets and  Performance'
+                text: 'IP Mechanism Targets and  Achievements'
             },
             subtitle: {
                 text: 'Click the columns to view perfomance by district'
@@ -61,14 +61,16 @@ $(document).ready(function()
                 type: 'category'
             },
             legend: {
-                enabled: false
+                enabled: true
             },
             plotOptions: {
                 series: {
-                    borderWidth: 0,
+                    colorByPoint: false,
+                    allowPointSelect:true,
                     dataLabels: {
                         enabled: true,
-                    }
+                    },
+                    showInLegend:true
                 }
             },
             series: [
@@ -80,6 +82,7 @@ $(document).ready(function()
                 },
                 {
                     type: 'column',
+                    name: 'Achievement',
                     colorByPoint: false,
                     data: chartperformancedata,
                     drilldown:[chartperformancedata[0].drilldown,chartperformancedata[1].drilldown,chartperformancedata[2].drilldown,
@@ -98,6 +101,7 @@ $(document).ready(function()
               },
                   {
                       id:chartperformancedata[1].drilldown, //RHSP
+                      name:'RHSP',
                       data:[
                           {name:districtdata[9].name,y:districtdata[9].data,drilldown:'bukomansimbi'},//bukomansimbi
                           {name:districtdata[10].name,y:districtdata[10].data,drilldown:'kalangala'},
@@ -188,38 +192,7 @@ $(document).ready(function()
                           {name:districtdata[35].name,y:districtdata[35].data,drilldown:'kyenjonjo'}
                       ]
                   },
-                  {
-                      id:'kamwenge',
-                      data:[
-                          [facilitydata[74].name,facilitydata[74].data],[facilitydata[75].name,facilitydata[75].data],
-                          [facilitydata[76].name,facilitydata[76].data]
-                      ]
-                  },
-                  {
-                      id:'kasese',
-                      data:[
-                          [facilitydata[77].name,facilitydata[77].data],[facilitydata[78].name,facilitydata[78].data],
-                          ]
-                  },
-                  {
-                      id:'kyenjonjo',
-                      data:[
-                          [facilitydata[81].name,facilitydata[81].data],[facilitydata[82].name,facilitydata[82].data],
-                      ]
-                  },
-                  {
-                      id:chartperformancedata[3].drilldown,
-                      data:[
-                          {name:districtdata[37].name,y:districtdata[37].data,drilldown:'kaberamaido'},{name:districtdata[38].name,y:districtdata[38].data,drilldown:'katakwi'}, {name:districtdata[39].name,y:districtdata[39].data,drilldown:'kumi'},
-                          {name:districtdata[40].name,y:districtdata[40].data,drilldown:'Soroti'}
-                      ]
-                  },
-                  {
-                      id:'kaberamaido',
-                      data:[
-                          [facilitydata[53].name,facilitydata[81].data]
-                      ]
-                  },
+
                   {
                       id:'katakwi',
                       data:[
@@ -281,32 +254,7 @@ $(document).ready(function()
                           [facilitydata[36].name,facilitydata[36].data],[facilitydata[37].name,facilitydata[37].data],[facilitydata[38].name,facilitydata[38].data]
                       ]
                   },
-                  {
-                      id:chartperformancedata[5].drilldown,
-                      data:[
-                          {name:districtdata[53].name,y:districtdata[53].data,drilldown:'Arua'},
-                          {name:districtdata[54].name,y:districtdata[54].data,drilldown:'Nebbi'},
-                          {name:districtdata[55].name,y:districtdata[55].data,drilldown:'Zombo'},
-                          {name:districtdata[56].name,y:districtdata[56].data,drilldown:'Hoima'},
-                          {name:districtdata[57].name,y:districtdata[57].data,drilldown:'Kibaale'},
-                          {name:districtdata[58].name,y:districtdata[58].data,drilldown:'Masindi'},
-                          {name:districtdata[59].name,y:districtdata[59].data,drilldown:'kagadi'}
-                      ]
-                  },
-                  {
-                     id:'Arua',
-                      data:[
-                          [facilitydata[59].name,facilitydata[59].data],[facilitydata[60].name,facilitydata[60].data],[facilitydata[61].name,facilitydata[61].data],
-                          [facilitydata[62].name,facilitydata[62].data],[facilitydata[63].name,facilitydata[63].data],[facilitydata[64].name,facilitydata[64].data]
 
-                      ]
-                  },
-                  {
-                      id:'Nebbi',
-                      data:[
-                          [facilitydata[65].name,facilitydata[65].data],[facilitydata[66].name,facilitydata[66].data]
-                      ]
-                  },
                   {
                       id:'Zombo',
                       data:[
@@ -317,24 +265,6 @@ $(document).ready(function()
                       id:'Hoima',
                       data:[
                           [facilitydata[68].name,facilitydata[68].data],[facilitydata[69].name,facilitydata[69].data],[facilitydata[70].name,facilitydata[70].data]
-                      ]
-                  },
-                  {
-                      id:'Kibaale',
-                      data:[
-                          [facilitydata[79].name,facilitydata[79].data],[facilitydata[80].name,facilitydata[80].data]
-                      ]
-                  },
-                  {
-                      id:'Masindi',
-                      data:[
-                          [facilitydata[83].name,facilitydata[83].data],[facilitydata[84].name,facilitydata[84].data],[facilitydata[85].name,facilitydata[85].data]
-                      ]
-                  },
-                  {
-                      id:'kagadi',
-                      data:[
-                          [facilitydata[86].name,facilitydata[86].data]
                       ]
                   }
               ]
