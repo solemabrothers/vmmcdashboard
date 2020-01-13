@@ -2,7 +2,7 @@
 
 <h4>VOLUNTARY MEDICAL MALE  CIRCUMCISION  DASHBOARD
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left: 300px;">National/IP Mechanism Filter</button></h4>
+{{--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left: 300px;">National/IP Mechanism Filter</button></h4>--}}
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">

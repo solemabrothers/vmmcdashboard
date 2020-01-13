@@ -95,4 +95,3 @@
 <script src="dist/js/demo.js"></script>
 </body>
 </html>
-<!-- style="min-height: 635px;margin-left: 180px;" -->

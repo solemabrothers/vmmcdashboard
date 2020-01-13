@@ -48,10 +48,10 @@ FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartn
   AND c.SummaryDate >= \'2019-10-01\' group by c.Facility,c.ImplementingPartner
   HAVING positive !=0');
 
-        $monthly_data = DB::select('SELECT  i.Ip_name as ipmechanism,SUM(c.NumberCircumcisedBelow10) as category9, SUM(c.NumberCircumcisedBetween10And14) as category1,SUM(c.NumberCircumcisedBetween15And19)as category2,
-SUM(c.NumberCircumcisedBetween20And24) as category3,SUM(c.NumberCircumcisedBetween25And29) as category4,SUM(c.NumberCircumcisedBetween30And34) as category5,
-SUM(c.NumberCircumcisedBetween35And39) as category6,SUM(c.NumberCircumcisedBetween40And44) + SUM(NumberCircumcisedBetween45And49)as category7,
-SUM(c.NumberCircumcisedBetween50And54)+ SUM(c.NumberCircumcisedBetween55And59)+ SUM(c.NumberCircumcised60andabove) as category8
+        $monthly_data = DB::select('SELECT  i.Ip_name as ipmechanism,SUM(c.NumberCircumcisedBelow10) as category1, SUM(c.NumberCircumcisedBetween10And14) as category2,SUM(c.NumberCircumcisedBetween15And19)as category3,
+SUM(c.NumberCircumcisedBetween20And24) as category4,SUM(c.NumberCircumcisedBetween25And29) as category5,SUM(c.NumberCircumcisedBetween30And34) as category6,
+SUM(c.NumberCircumcisedBetween35And39) as category7,SUM(c.NumberCircumcisedBetween40And44) as category8,SUM(NumberCircumcisedBetween45And49)as category9,
+SUM(c.NumberCircumcisedBetween50And54)+ SUM(c.NumberCircumcisedBetween55And59)+ SUM(c.NumberCircumcised60andabove) as category10
 from circumcision c
 inner join implementingpartner i on c.ImplementingPartner = i.IP_ID
 where c.SummaryDate >= \'2019-10-01\'

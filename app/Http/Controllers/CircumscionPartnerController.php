@@ -50,7 +50,7 @@ class CircumscionPartnerController extends Controller
         $Between40And44target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('40<44');
         $Between45And49target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('45<49');
 
-        $Above45target= DB::table('ipmechanismtargets')->sum('50>');
+        $Above50target= DB::table('ipmechanismtargets')->sum('50>');
 
        $Between10And14= new PieChart('10-14',$Between10And14,$Between10And14target);
        $Between15And19= new PieChart('15-19',$Between15And19,$Between15And19target);
@@ -61,7 +61,7 @@ class CircumscionPartnerController extends Controller
        $Between40And44= new PieChart('40-44',$Between40And44,$Between40And44target);
         $Between45And49= new PieChart('45-49',$Between45And49,$Between45And49target);
 
-        $Above45= new PieChart('>45',$Above45,$Above45target);
+        $Above45= new PieChart('>50',$Above45,$Above50target);
 
        $pichartArray= array($Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Between45And49,$Above45);
         for($i=0;$i<sizeof($pichartArray);$i++)
