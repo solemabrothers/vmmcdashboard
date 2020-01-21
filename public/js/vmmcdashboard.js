@@ -4,12 +4,13 @@ $(document).ready(function()
         var chartSeriesData = [];
         var districtdata =[];
         var facilitydata=[];
-
+        var ipmechanismperformance=[];
         var chartperformancedata =[];
         var vmmcperformancedata = performance;
         var ipperformanceandtarget = vmmcperformancedata[0];
         var ipdistrictperformance = vmmcperformancedata[1];
         var facilityperformance =vmmcperformancedata[2];
+        var ipmechanismoutput =vmmcperformancedata[3];
 
         for (var i = 0; i < ipperformanceandtarget.length; i++) {
             var  ip_ids=ipperformanceandtarget[i].IP_ID
@@ -25,6 +26,21 @@ $(document).ready(function()
                 drilldown:ip_ids
             });
         }
+
+
+        for (var i = 0; i < ipmechanismoutput.length; i++) {
+            var  ip_ids=ipmechanismoutput[i].IP_ID
+            var   series_name=ipmechanismoutput[i].Ipmechanismname;
+            var  ipoutput=ipmechanismoutput[i].ipmechanismtarget;
+            var ipperformance=ipmechanismoutput[i].Performance
+            ipmechanismperformance.push({
+                y: ipperformance,
+            });
+                  }
+
+
+
+
         for (var i = 0; i < ipdistrictperformance.length; i++) {
              var  ip_ids=ipdistrictperformance[i].IP_ID
             var   district_series_name=ipdistrictperformance[i].District_name;
@@ -60,12 +76,40 @@ $(document).ready(function()
             subtitle: {
                 text: 'Click the columns to view perfomance '
             },
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: '',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: true
+            }],
             xAxis: {
                 type: 'category'
             },
             legend: {
                 enabled: true
             },
+
             plotOptions: {
                 series: {
                     colorByPoint: false,
@@ -81,9 +125,21 @@ $(document).ready(function()
                     type: 'column',
                     color: 'Green',
                     name: 'Target',
-                    data: chartSeriesData
-                },
+                    data: chartSeriesData,
+
+                   },
                 {
+                    type: 'line',
+                    color: 'White',
+                    name: 'Performance',
+                    yAxis: 1,
+                    dataLabels:{
+                        pointFormat: '<span style="color:{series.color}"></span>({point.y}%)<br/>',
+                    },
+                    fillOpacity: 0,
+                    data: ipmechanismperformance
+                },
+              {
                     type: 'column',
                     name: 'Achievement',
                     colorByPoint: false,

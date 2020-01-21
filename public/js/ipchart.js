@@ -112,37 +112,7 @@ $(document).ready(function()
             }, {
                 type:'column',
                 name: 'Performance',
-                data:[
-                    {
-                        x:"IDI Kampala",
-                        y: 68622,
-                        drilldown: "idi"
-                    },
-                    {
-
-                        y: 56524,
-                        drilldown: "rhsp"
-                    },
-                    {
-                        y: 48919,
-                        drilldown: "baylor"
-                    },
-                    {
-                        y: 21300,
-                        drilldown: "taso"
-                    },
-                    {
-
-                        y: 59484,
-                        drilldown: "mildmay"
-                    },
-                    {
-
-                        y: 68856,
-                        drilldown: "idiwest"
-                    },
-
-                ]
+                data:[  ]
             }],
 
         };
@@ -177,7 +147,6 @@ $(document).ready(function()
                 title: {
                     text: 'Number Circumscissed'
                 }
-
             },
             plotOptions: {
 
@@ -189,7 +158,6 @@ $(document).ready(function()
                     },
                     showInLegend:true
                 }
-
             },
             series:[
                 {
@@ -205,113 +173,67 @@ $(document).ready(function()
                 }]
 
         };
-
-
         chart = new Highcharts.Chart(options);
 
     });
 
 });
 
-
 $(document).ready(function()
 {
     // Create the chart
-    Highcharts.chart('devicesused', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'IP Mechanism Targets and  Performance'
-        },
-        subtitle: {
-            text: 'Click Device to view Facilities using Devices'
-        },
-        accessibility: {
-            announceNewData: {
-                enabled: true
-            }
-        },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+    $.getJSON("devicetypeused", function(deviceArray) {
+        var surgicalmethods =deviceArray[0];
+        var devicetype =deviceArray[1];
+
+        console.log(devicetype);
+        var options={
+            chart: {
+                renderTo:'devicesused',
+                borderWidth:1
+            },
+
             title: {
-                text: 'Number Circumscised by Method used'
-            }
+                text: 'TOTAL  AGE CATEGORY PERFORMANCE  '
+            },
 
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
+            xAxis: {
+                categories: categories
+            },
+            yAxis: {
+                title: {
+                    text: 'Number Circumscissed'
                 }
-            }
-        },
+            },
+            plotOptions: {
 
-        tooltip: {
-        },
-
-        series: [
-            {
-                type:'column',
-                color:'Green',
-                name: 'Target',
-                data:[
-                    {
-                        name:'Surgical',
-                        y:315241
+                series: {
+                    colorByPoint: false,
+                    allowPointSelect:true,
+                    dataLabels:{
+                        enabled:true,
                     },
-                    {
-                        name:'Device',
-                        y:176,
-                        drilldown:'device'
-                    }
-                ]
-
-            }
-        ],
-        drilldown: {
-            series: [
-                {
-                    name: "Device",
-                    id: "device",
-                    data: [
-                        [
-                             "Kisenyi Health Centre",
-                            34
-                        ],
-                        [
-                            "IDI Omugo Health Centre",
-                            15
-                        ],
-                        [
-                            "IDI Rhino Camp Health Centre IV",
-                            34
-                        ],
-                        [
-                            "Luwero Health Centre IV.",
-                            60
-                        ],
-                        [
-                            "IDI Buwambo HC IV",
-                            32
-                        ],
-                        [
-                            "Kakumiro HCIV",
-                            1
-                        ]
-                    ]
+                    showInLegend:true
                 }
-            ]
-        }
+            },
+            series:[
+                {
+                    type:'column',
+                    name:'Target',
+                    color:'Green',
+                    data:surgicalmethods
+                },
+                {
+                    type:'column',
+                    name:'Performance',
+                    data:devicetype
+                }]
+
+        };
+        chart = new Highcharts.Chart(options);
     });
 
-})
+});
 
 
 

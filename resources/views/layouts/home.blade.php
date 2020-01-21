@@ -55,12 +55,14 @@
             </div>
 
             <div class="col-lg-2">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fa fa-users"></i></span>
+                <div class="info-box mb-3" id="infobox">
+                    <span class=" info-box-icon bg-danger elevation-1"><i class="fa fa-user-md"></i></span>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text" id="boxcontent" style="font-size:12px">HIV Negative</span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($numbersHIVnegative[0]->negative)}}</span>
+                    <div class="info-box-content"  id="boxcontent" data-toggle="modal" data-target="#deviceused">
+                        <span class="info-box-text" id="boxcontent" style="font-size:12px">Devices Used</span>
+                        <span class="progress-description"  data-toggle="modal" data-target="#devicesused" id="footnotes">Click to View Details
+                          </span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($totalnumbercircumscisedusingdevices[0]->DevicesUsed)}}</span>
 
                     </div>
                     <!-- /.info-box-content -->
@@ -73,7 +75,7 @@
                 <div class="info-box mb-3" id="infobox">
                     <span class=" info-box-icon bg-danger elevation-1"><i class="fa fa-user-md"></i></span>
 
-                    <div class="info-box-content"  id="boxcontent" data-target="#hivpositive">
+                    <div class="info-box-content"  id="boxcontent" data-toggle="modal" data-target="#hivpositive">
                         <span class="info-box-text" id="boxcontent" style="font-size:12px">HIV Postive</span>
                         <span class="progress-description"  data-toggle="modal" data-target="#hivpositive" id="footnotes">Click to View Details
                           </span>
@@ -92,7 +94,7 @@
 
                     <div class="info-box-content" data-toggle="modal" id="boxcontent" data-target="#adverseEffects">
 
-                        <span class="info-box-text" >Adverse Effects </span>
+                        <span class="info-box-text" >Adverse Events </span>
                         <span class="progress-description" id="footnotes">Click to View Details
                           </span>
                         <span class="info-box-number" id="boxnumbers">{{number_format($SeverelyAffected[0]->ClientsAffected)}}</span>
@@ -120,11 +122,11 @@
         </div>
 
          <div class="row" style="padding-top:15px"  >
-             <div class="col-lg-6" id="categories">
+             <div class="col-lg-12" id="categories">
 
              </div>
-        <div class="col-lg-6" id="devicesused">
-            </div>
+{{--        <div class="col-lg-6" id="devicesused">--}}
+{{--            </div>--}}
 
         </div>
 

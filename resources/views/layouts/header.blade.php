@@ -2,7 +2,7 @@
 
 <h4>VOLUNTARY MEDICAL MALE  CIRCUMCISION  DASHBOARD
 
-{{--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left: 300px;">National/IP Mechanism Filter</button></h4>--}}
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left: 300px;">National/IP Mechanism Filter</button></h4>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -110,7 +110,7 @@
 
 <!-- Clients Diagnosised Postivie with HIV -->
 <div id="hivpositive" class="modal fade" role="dialog">
-    <div class="modal-dialog" id="hivmodal" >
+    <div class="modal-dialog " id="hivmodal" >
 
         <!-- Modal content -->
         <div class="modal-content" style="width: 800px;">
@@ -153,7 +153,7 @@
 <!-- Filter data Models -->
 <!-- Adverse Events Summary -->
 <div id="adverseeventsfilter" class="modal fade" role="dialog">
-    <div class="modal-dialog" >
+    <div class="modal-dialog"  id="hivmodal">
 
         <!-- Modal content -->
         <div class="modal-content" style="width: 800px;">
@@ -195,3 +195,44 @@
 </div>
 
 
+
+{{--Number of devices used by facilities--}}
+<div id="deviceused" class="modal fade" role="dialog">
+    <div class="modal-dialog-centered" id="hivmodal">
+
+        <!-- Modal content -->
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Devices Used in Facility</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover" id="table">
+                    <thead>
+                    <tr class="table-primary">
+                        <th>IP</th>
+                        <th>District</th>
+                        <th>Facility</th>
+                        <th>Clients</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($facilitiesusingdevices as $devicesused)
+                        <tr>
+                            <td>{{$devicesused->Ip_name}}</td>
+                            <td>{{$devicesused->District_name}}</td>
+                            <td>{{$devicesused->facility_name}}</td>
+                            <td>{{$devicesused->DevicesUsed}}</td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

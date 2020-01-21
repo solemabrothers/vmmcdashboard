@@ -21,7 +21,6 @@ class Controller extends BaseController
     public function index()
     {
      $ips = DB::table('implementingpartner')->get();
-     $regions=DB::table('region')->get();
     $districts=DB::table('district')->get();
         $numbersHIVnegative=DB::select('SELECT SUM(c.NumberHIVNegative) as negative FROM mets_vmmc.circumcision c   where c.SummaryDate >= \'2019-10-01\'');
         $numbersHIVpositive =DB::select('SELECT SUM(c.NumberHIVPositive) as positive FROM mets_vmmc.circumcision c  where c.SummaryDate >= \'2019-10-01\'');
@@ -63,62 +62,15 @@ where c.SummaryDate >= \'2019-10-01\'');
 
         $totaltarget =DB::select('SELECT SUM(TARGET) as target from ipmechanismtargets t  where t.Year_of_target=\'2020\'');
 
-
+ $totalnumbercircumscisedusingdevices=DB::select('select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >=\'2018-10-01\'');
+ $facilitiesusingdevices=DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberDeviceType) AS DevicesUsed
+      FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
+      AND c.SummaryDate >= \'2018-10-01\'  group by facility,implementingpartner
+HAVING DevicesUsed !=0');
         $totalperformance =number_format(($totalnumbercircumscised[0]->total/$totaltarget[0]->target)*100,2,'.','');
-//     return $monthly_data;
-       return view('layouts.home', compact('districts','ips','totalperformance','totaltarget','totalnumbercircumscised','regions','weeklyadverseeffects','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected'));
+       return view('layouts.home', compact('districts','ips','totalperformance','totaltarget','totalnumbercircumscised','weeklyadverseeffects','facilitiesusingdevices','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected','totalnumbercircumscisedusingdevices'));
     }
 
-
-
-    public function getfilteredData(Request $request)
-    {
-        // $ips = DB::table('ImplementingPartner')->get();
-        $ips = DB::table('implementingpartner')->get();
-        $regions=DB::table('region')->get();
-        $districts=DB::table('district')->get();
-
-        $ip_name = $request->input('ips');
-        $today= Carbon::today();
-        $yesterday=$today->subWeek();
-       $sql= "SELECT SUM(circumcision.NumberCircumcised) As ipweeklyperformance  FROM `mets_vmmc`.`circumcision`
-                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
-       $ipweeklyperformance = DB::select(DB::raw($sql));
-
-        $sql_query="SELECT SUM(circumcision.NumberHIVNegative) As ipnegativeclients  FROM `mets_vmmc`.`circumcision`
-                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
-        $numbersHIVnegative=DB::select(DB::raw($sql_query));
-
-        $sql_positive="SELECT SUM(circumcision.NumberHIVPositive) As ippositiveclients  FROM `mets_vmmc`.`circumcision`
-                        WHERE  circumcision.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND circumcision.ImplementingPartner=$ip_name";
-        $numbersHIVpositive=DB::select(DB::raw($sql_positive));
-
-        $clientsaffected ="SELECT SUM(c.NumberSeverePain)+ SUM(c.NumberSevereExcessiveBleeding)+SUM(c.NumberSevereSwellingHaematoma)+ 
-                        +SUM(c.NumberSevereAnaestheticRelatedEvent)+ SUM(c.NumberSevereExcessiveSkinRemoved)+ 
-                      SUM(c.NumberSevereInfection)+SUM(c.NumberSevereDamageToPenis) As ClientsAffected
-                    FROM mets_vmmc.circumcision c WHERE c.SummaryDate>=DATE (NOW() - INTERVAL 7 DAY) AND c.ImplementingPartner=$ip_name ";
-        $clientsseverelyaffected=DB::select(DB::raw($clientsaffected));
-
-        $monthlydistrictPerformance ="SELECT 
-IFNULL(District_name, 'TOTAL') AS District_name,
- SUM(IF (MONTH(c.SummaryDate) = 1, c.NumberCircumcised, 0)) AS January ,
- SUM(IF (MONTH(c.SummaryDate) = 2, c.NumberCircumcised, 0)) AS February ,
- SUM(IF (MONTH(c.SummaryDate) = 3, c.NumberCircumcised, 0)) AS March ,
- SUM(IF (MONTH(c.SummaryDate) = 4, c.NumberCircumcised, 0)) AS April ,
- SUM(IF (MONTH(c.SummaryDate) = 5, c.NumberCircumcised, 0)) AS May  ,
- SUM(IF (MONTH(c.SummaryDate) = 6, c.NumberCircumcised, 0)) AS June ,
- SUM(IF (MONTH(c.SummaryDate) = 7, c.NumberCircumcised, 0)) AS July ,
-   SUM(c.NumberCircumcised) as  DistrictTotal
-
-FROM mets_vmmc.Circumcision c, facility f, District d WHERE
-  c.Facility = f.Facility AND f.district_id = d.District_ID AND YEAR(c.SummaryDate)=2018  AND c.implementingpartner=$ip_name GROUP BY f.district_id WITH ROLLUP";
-        $monthly_data = DB::select(DB::raw($monthlydistrictPerformance));
-         return view('layouts.filterdata', compact('ipweeklyperformance','numbersHIVnegative','monthly_data','ips','numbersHIVpositive','clientsseverelyaffected'));
-
-
-
-
-    }
 
 }
 

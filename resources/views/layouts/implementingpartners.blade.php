@@ -8,10 +8,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    
+
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="    https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
@@ -27,7 +27,7 @@
     {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
     <script src="//code.jquery.com/jquery-1.12.3.js"></script>
     <!-- Google Font: Source Sans Pro -->
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
@@ -57,27 +57,27 @@
 <body>
 <?php
 
-use App\Models\PieChart;
+use App\Models\FilteredAgeGroups;
 
  $selected_ip =  $_GET["ips"];
  $age_categories = DB::select("SELECT SUM(NumberCircumcisedBetween10And14) As between10And14 FROM mets_vmmc.circumcision c
  WHERE c.ImplementingPartner='$selected_ip' and YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)");
 $between15And19 = DB::select("SELECT SUM(NumberCircumcisedBetween15And19) As Ip_performance FROM mets_vmmc.circumcision c
 WHERE c.ImplementingPartner='$selected_ip' and YEARWEEK(c.SummaryDate,2) = YEARWEEK(NOW() - INTERVAL 1 WEEK,2)");
-$status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,                                        
+$status_of_Clients = DB::select('SELECT monthname(SummaryDate) as months,
 SUM(c.NumberCircumcised) As Clients,SUM(c.NumberHIVPositive) AS HIVPOstive, SUM(c.NumberHIVNegative) As HIVNegative
 FROM mets_vmmc.Circumcision c WHERE YEAR(SummaryDate)= YEAR(CURDATE()) group by monthname(c.SummaryDate) order by c.SummaryDate;');
 
-$Between10And14= new PieChart('From10to14',$age_categories);
+$Between10And14= new FilteredAgeGroups('From10to14',$age_categories);
 $agedata = json_encode($Between10And14,JSON_NUMERIC_CHECK);
 echo $agedata;
 
 ?>
 <div id="container">
- 
+
 </div>
  <script type="text/javascript">
- 
+
  $(document).ready(function() {
 
    var options = {
@@ -146,8 +146,8 @@ echo $agedata;
 };
 var data = <?php echo json_encode($agedata); ?>;
 
- 
-           
+
+
     var series={
         data:[]
     }
@@ -164,6 +164,6 @@ var data = <?php echo json_encode($agedata); ?>;
     chart = new Highcharts.Chart(options);
 });
 </script>
-    
+
 </body>
 </html>

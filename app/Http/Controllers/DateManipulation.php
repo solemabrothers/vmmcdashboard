@@ -10,7 +10,7 @@ use Doctrine\DBAL\Driver\PDOConnection;
 use Illuminate\Http\Request;
 use DB;
 use PDO;
-use App\Models\PieChart;
+use App\Models\FilteredAgeGroups;
 
 use Illuminate\Database\SqlServerConnection;
 use Doctrine\DBAL\Driver\SQLSrv;
@@ -78,7 +78,7 @@ public function getMysqlData()
             echo 'Exception -> ';
             var_dump($e->getMessage());
         }
-        
+
     }
 }
 

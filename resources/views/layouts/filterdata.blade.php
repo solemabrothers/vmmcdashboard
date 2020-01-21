@@ -9,7 +9,7 @@
 @section('content')
     <body>
     <div class="content-wrapper">
-    @include('layouts.header')
+{{--    @include('layouts.header')--}}
     <!-- Content Header (Page header) -->
         <!-- Main content -->
         <div class="card" id="title">:TOTAL WEEKLY PERFORMANCE</div>
@@ -20,7 +20,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text" id="boxcontent">Clients Circmscissed</span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($ipweeklyperformance[0]->ipweeklyperformance)}}</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($Ip_weekly_performance[0]->total)}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -33,7 +33,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text" id="boxcontent">HIV Negative</span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($numbersHIVnegative[0]->ipnegativeclients)}}</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($clientsHIVnegative[0]->negative)}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -47,7 +47,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text" id="boxcontent">HIV Postive</span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($numbersHIVpositive[0]->ippositiveclients)}}</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($clientsHIVpositive[0]->positive)}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -61,7 +61,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text" id="boxcontent">Clients Severely Affected </span>
-                        <span class="info-box-number" id="boxnumbers">{{number_format($clientsseverelyaffected[0]->ClientsAffected)}}</span>
+                        <span class="info-box-number" id="boxnumbers">{{number_format($Ip_severeadverseeffects[0]->ClientsAffected)}}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -96,43 +96,6 @@
 
                 </div>
 
-
-                <div class="row">
-                    <div class="panel-body">
-                        <table class="table table-striped table-bordered " id="table">
-                            <thead>
-                            <tr class="table-primary"><th style="width: 100px;">District Name</th>
-                                <th style="width:100px">January</th>
-                                <th style="width:100px"> Febuary</th>
-                                <th style="width: 100px;">March</th>
-                                <th style="width: 100px;">April</th>
-                                <th style="width: 100px;">May</th>
-                                <th style="width: 100px;">June</th>
-                                <th style="width: 100px;">July</th>
-                                <th>Total</th></tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                @foreach($monthly_data as $data)
-                                    <td>{{$data->District_name}}</td>
-                                    <td>{{$data->January}}</td>
-                                    <td>{{$data->February}}</td>
-                                    <td>{{$data->March}}</td>
-                                    <td>{{$data->April}}</td>
-                                    <td>{{$data->May}}</td>
-                                    <td>{{$data->June}}</td>
-                                    <td>{{$data->July}}</td>
-                                    {{--<td>{{$data->August}}</td>--}}
-                                    {{--<td>{{$data->September}}</td>--}}
-                                    <td>{{$data->DistrictTotal}}</td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                </div>
             </div>
         </div>
     </div>

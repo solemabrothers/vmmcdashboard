@@ -5,28 +5,16 @@ namespace App\Http\Controllers;
 use App\AnalysisGraphs;
 use App\Models\District;
 use App\Models\Facility;
-use App\Models\PieChart;
+use App\Models\AgeGroupCategories;
 use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
-class CircumscionPartnerController extends Controller
+class AgeGroupAchievement extends Controller
 {
 
     public function index()
     {
-        $facilities= DB::table('facility')->get();
-        $clientsAffected = DB::table('circumscission')->select(DB::raw('SUM(NumberMildPain+NumberSeverePain+NumberMildExcessiveBleeding+NumberMildPain+
-		NumberSeverePain+NumberMildExcessiveBleeding+NumberModerateExcessiveBleeding+NumberSevereExcessiveBleeding+NumberMildSwellingHaematoma+NumberMildSwellingHaematoma+
-		NumberModerateSwellingHaematoma+NumberSevereSwellingHaematoma+NumberMildAnaestheticRelatedEvent+NumberModerateAnaestheticRelatedEvent+NumberSevereAnaestheticRelatedEvent+
-		NumberMildExcessiveSkinRemoved+NumberModerateExcessiveSkinRemoved+NumberSevereExcessiveSkinRemoved+NumberMildInfection+NumberModerateInfection+NumberSevereInfection+
-		NumberMildDamageToPenis+NumberModerateDamageToPenis+NumberSevereDamageToPenis)'))->get();
-
-
-
-        echo'<pre>';
-        print_r($clientsAffected);
-
-
+            //TODO
     }
 
        public function numbersByAgeGroup()
@@ -52,16 +40,16 @@ class CircumscionPartnerController extends Controller
 
         $Above50target= DB::table('ipmechanismtargets')->sum('50>');
 
-       $Between10And14= new PieChart('10-14',$Between10And14,$Between10And14target);
-       $Between15And19= new PieChart('15-19',$Between15And19,$Between15And19target);
-       $Between20And24= new PieChart('20-24',$Between20And24,$Between20And24target);
-       $Between26And30= new PieChart('25-29',$Between26And30,$Between26And30target);
-       $Between31And34= new PieChart('30-34',$Between31And34,$Between31And34target);
-       $Between35And39= new PieChart('35-39',$Between35And39,$Between35And39target);
-       $Between40And44= new PieChart('40-44',$Between40And44,$Between40And44target);
-        $Between45And49= new PieChart('45-49',$Between45And49,$Between45And49target);
+       $Between10And14= new AgeGroupCategories('10-14',$Between10And14,$Between10And14target);
+       $Between15And19= new AgeGroupCategories('15-19',$Between15And19,$Between15And19target);
+       $Between20And24= new AgeGroupCategories('20-24',$Between20And24,$Between20And24target);
+       $Between26And30= new AgeGroupCategories('25-29',$Between26And30,$Between26And30target);
+       $Between31And34= new AgeGroupCategories('30-34',$Between31And34,$Between31And34target);
+       $Between35And39= new AgeGroupCategories('35-39',$Between35And39,$Between35And39target);
+       $Between40And44= new AgeGroupCategories('40-44',$Between40And44,$Between40And44target);
+        $Between45And49= new AgeGroupCategories('45-49',$Between45And49,$Between45And49target);
 
-        $Above45= new PieChart('>50',$Above45,$Above50target);
+        $Above45= new AgeGroupCategories('>50',$Above45,$Above50target);
 
        $pichartArray= array($Between10And14,$Between15And19,$Between20And24,$Between26And30,$Between31And34,$Between35And39,$Between40And44,$Between45And49,$Above45);
         for($i=0;$i<sizeof($pichartArray);$i++)
@@ -82,9 +70,6 @@ class CircumscionPartnerController extends Controller
         array_push($ageperformance,$agecategoryperformance);
         array_push($ageperformance,$agecategorytarget);
         return json_encode($ageperformance,JSON_NUMERIC_CHECK);
-
-      //return $ageperformance;
-
     }
 
 

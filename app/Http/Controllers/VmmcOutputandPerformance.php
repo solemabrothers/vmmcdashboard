@@ -10,7 +10,7 @@ use DB;
 use PhpParser\Node\Expr\Array_;
 use Carbon\Carbon;
 
-class ImplementingPartnerController extends Controller
+class VmmcOutputandPerformance extends Controller
 {
 
     //return all the facilities supported by perticular facilities;
@@ -50,6 +50,8 @@ where c.SummaryDate >= \'2018-10-01 00:00:00\' group by ImplementingPartner');
     $districtperformance=DB::select('SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
 AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
       AND c.SummaryDate between \'2018-10-01\' and \'2019-09-30\' group by implementingpartner,d.district_id');
+
+
     for($i=0;$i<sizeof($districtperformance);$i++)
     {
         $ip_id[] = $districtperformance[$i]-> IP_ID;
@@ -86,11 +88,17 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
     {
         $ipmechanismperformance[] = $performanceandtarget[$i]-> ipmechanismperformance;
     }
+
+
+
+
     $result = array();
 
     array_push($result,$ipmechanismname);
     array_push($result,$ipmechanismtarget);
     array_push($result,$ipmechanismperformance);
+
+
 
     $combinedarray=array();
     array_push($combinedarray,$result);
@@ -181,13 +189,30 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
                                         inner join district d on f.district_id = d.district_id
                                         WHERE c.SummaryDate >= \'2019-10-01\'
                                         group by f.Facility,d.district_id order by district_id');
+        $ipmechanismoutput=DB::select('SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget,ROUND((sum(NumberCircumcised)/TARGET*100),2) As Performance from implementingpartner
+                                                       inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
+                                                       inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
+where c.SummaryDate >= \'2019-10-01 00:00:00\' AND t.Year_of_target=\'2020\' group by ImplementingPartner');
 
 
         $combinedarray=array();
         array_push($combinedarray,$performanceandtarget);
         array_push($combinedarray,$districtperformance);
         array_push($combinedarray,$facilityperformance);
-        return json_encode($combinedarray,JSON_NUMERIC_CHECK);
+        array_push($combinedarray,$ipmechanismoutput);
+       return json_encode($combinedarray,JSON_NUMERIC_CHECK);
+    }
+
+    public function deviceTypeUsed()
+    {
+        $numberSurgicaltype=DB::select('select SUM(NumberSurgicalType) as SurgicalMethods from circumcision c where c.SummaryDate >=\'2019-10-01\'');
+        $numberDevicetype=DB::select('select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >=\'2019-10-01\'');
+
+        $deviceArray =array();
+        array_push($deviceArray,$numberSurgicaltype);
+        array_push($deviceArray,$numberDevicetype);
+
+        return json_encode($deviceArray,JSON_NUMERIC_CHECK);
     }
 
 

@@ -22,23 +22,25 @@ Route::get('/facility', function () {
 //Route::get('/circumscissionnumbers','CircumscionPartnerController');
 
 Route::get('/getRegionValues', 'RegionController@getDistricts');
-Route::get('/daily', 'CircumscionPartnerController@Circumscissionbyweek');
-Route::get('/ipnumbers','ImplementingPartnerController@NumbersByIp');
-Route::get('/ipcategories','ImplementingPartnerController@Ip_Category');
-Route::get('/adverseefffects','ImplementingPartnerController@AdverseEffects');
-Route::get('/ipmechanismtargetandperformance','ImplementingPartnerController@IpMechanismPerfomanceandTarget');
-Route::get('/districtperformance','ImplementingPartnerController@getIpperformnacebydistrict');
-Route::get('/drilldowns','ImplementingPartnerController@IpMechanismdrilldowntesting');
-
+Route::get('/daily', 'AgeGroupAchievement@Circumscissionbyweek');
+Route::get('/ipnumbers','VmmcOutputandPerformance@NumbersByIp');
+Route::get('/ipcategories','VmmcOutputandPerformance@Ip_Category');
+Route::get('/adverseefffects','VmmcOutputandPerformance@AdverseEffects');
+Route::get('/ipmechanismtargetandperformance','VmmcOutputandPerformance@IpMechanismPerfomanceandTarget');
+Route::get('/districtperformance','VmmcOutputandPerformance@getIpperformnacebydistrict');
+Route::get('/drilldowns','VmmcOutputandPerformance@IpMechanismdrilldowntesting');
+Route::get('/devicetypeused','VmmcOutputandPerformance@deviceTypeUsed');
 Route::get('/facilitynumbers', 'FacilityController@getFacilityNumbers');
 Route::get('/getfilteredData', 'Controller@getfilteredData');
 Route::get('/getfacilityNumbersByIp', 'RegionController@getCircurimscissedClientsinFacilityByIp');
-Route::get('/categoriesByAgegroup','CircumscionPartnerController@numbersByAgeGroup');
+Route::get('/categoriesByAgegroup','AgeGroupAchievement@numbersByAgeGroup');
 Route::get('/dateandtime', 'DateManipulation@index');
 Route::get('/connect', 'DatabaseConnection@index');
-Route::get('/hivstatus','CircumscionPartnerController@hivStatusClients');
+Route::get('/hivstatus','AgeGroupAchievement@hivStatusClients');
 Route::get('/getInsertData','DateManipulation@getMysqlData');
 Route::get('/insertdata','DateManipulation@insertdata');
+Route::get('/filterdata','FilterData@index');
+
 
 
 
@@ -49,9 +51,9 @@ Route::get('/charts', function (){
 Route::resource('/','Controller');
 Route::resource('dateandtime','DateManipulation');
 Route::resource('region', 'RegionController');
-Route::resource('circumscssion','CircumscionPartnerController');
+Route::resource('circumscssion','AgeGroupAchievement');
 Route::resource('district','DistrictController');
-Route::resource('ipz','ImplementingPartnerController');
+Route::resource('ipz','VmmcOutputandPerformance');
 Route::resource('charts', 'ChartsController');
 Route::resource('facility', 'FacilityController');
 
