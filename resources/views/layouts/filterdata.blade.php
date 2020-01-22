@@ -9,7 +9,7 @@
 @section('content')
     <body>
     <div class="content-wrapper">
-{{--    @include('layouts.header')--}}
+    @include('layouts.header')
     <!-- Content Header (Page header) -->
         <!-- Main content -->
         <div class="card" id="title">:TOTAL WEEKLY PERFORMANCE</div>

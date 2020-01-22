@@ -114,6 +114,9 @@ class FilterData extends BaseController
       AND c.SummaryDate >= \'2018-10-01\'  group by facility,implementingpartner
 HAVING DevicesUsed !=0');
 
+
+      $totalNumberCircumcisedusingDevicebyIP= DB::select('select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >=\'2018-10-01\'');
+
 //        $below10 = DB::table('circumcision')->WHEREBETWEEN('SummaryDate',[$startDate, $endDate])-> sum('NumberCircumcisedBelow10');
 //        $Between10And14 = DB::table('circumcision')->WHEREBETWEEN('SummaryDate',[$startDate, $endDate])->sum('NumberCircumcisedBetween10And14');
 //        $Between15And19 = DB::table('circumcision')->WHEREBETWEEN('SummaryDate',[$startDate, $endDate])->sum('NumberCircumcisedBetween15And19');
@@ -142,8 +145,8 @@ HAVING DevicesUsed !=0');
 
 }
 
-return view('layouts.filterdata', compact('districts','ips','facilitiesusingdevices','Ip_name','Ip_District_output','regions','endDate','startDate','weeklyadverseeffects','Ip_severeadverseeffects','annual_ip_performance','modelObjectJson', 'Ip_weekly_performance','clientsHIVnegative','HIVpositiveclients','clientsHIVpositive','clientsAffected','piechartArray'));
-
+//return view('layouts.filterdata', compact('districts','ips','facilitiesusingdevices','Ip_name','Ip_District_output','regions','endDate','startDate','weeklyadverseeffects','Ip_severeadverseeffects','annual_ip_performance','modelObjectJson', 'Ip_weekly_performance','clientsHIVnegative','HIVpositiveclients','clientsHIVpositive','clientsAffected','piechartArray'));
+return $facilitiesusingdevices;
 
 
 }

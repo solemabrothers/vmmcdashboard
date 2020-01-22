@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <table class="table" id="filtertable">
                             <tr>
-                                <td><label id="label">IP</label></td>
+                                <td><label id="label">IMPLEMENTING MECHANISM</label></td>
                                 <td><select class="form-control form-control-lg" name="ips">
                                         <option>National</option>
                                         @foreach($ips as $ip)
@@ -29,20 +29,20 @@
                                         @endforeach
                                     </select></td>
                             </tr>
-                            <tr>
-                                <td> <label id="label">Start Date:</label> </td>
-                                <td><input type="date" class="form-control" name="startdate"></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label id="label">End Date:</label>
+{{--                            <tr>--}}
+{{--                                <td> <label id="label">Start Date:</label> </td>--}}
+{{--                                <td><input type="date" class="form-control" name="startdate"></td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <label id="label">End Date:</label>--}}
 
-                                </td>
-                                <td>
-                                    <input type="date" class="form-control" name="enddate">
+{{--                                </td>--}}
+{{--                                <td>--}}
+{{--                                    <input type="date" class="form-control" name="enddate">--}}
 
-                                </td>
-                            </tr>
+{{--                                </td>--}}
+{{--                            </tr>--}}
                         </table>
 
 
@@ -185,7 +185,6 @@
                     @endforeach
 
                     </tbody>
-
                 </table>
             </div>
 
@@ -193,6 +192,8 @@
 
     </div>
 </div>
+
+
 
 
 
