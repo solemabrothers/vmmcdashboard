@@ -118,8 +118,7 @@
             <div class="col-lg-12" id="ipmechanismtargetandperformance">
             </div>
 
-
-        </div>
+                </div>
 
          <div class="row" style="padding-top:15px"  >
              <div class="col-lg-12" id="categories">

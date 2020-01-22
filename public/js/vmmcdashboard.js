@@ -3,23 +3,21 @@ $(document).ready(function()
     $.getJSON("drilldowns", function(performance) {
         var chartSeriesData = [];
         var districtdata =[];
+        var districtdata1 =[1000,2000];
         var facilitydata=[];
         var ipmechanismperformance=[];
         var chartperformancedata =[];
         var vmmcperformancedata = performance;
-        var ipperformanceandtarget = vmmcperformancedata[0];
-        var ipdistrictperformance = vmmcperformancedata[1];
-        var facilityperformance =vmmcperformancedata[2];
-        var ipmechanismoutput =vmmcperformancedata[3];
-
+        var ipmechanismtarget = vmmcperformancedata[0];
+        var ipperformanceandtarget = vmmcperformancedata[1];
+        var ipdistrictperformance = vmmcperformancedata[2];
+        var facilityperformance =vmmcperformancedata[3];
+        var ipmechanismoutput =vmmcperformancedata[4];
         for (var i = 0; i < ipperformanceandtarget.length; i++) {
             var  ip_ids=ipperformanceandtarget[i].IP_ID
             var   series_name=ipperformanceandtarget[i].Ipmechanismname;
-            var  iptargets=ipperformanceandtarget[i].ipmechanismtarget;
             var ipperformance=ipperformanceandtarget[i].ipmechanismperformance
-            chartSeriesData.push({
-                y: iptargets,
-            });
+
             chartperformancedata.push({
                 name: series_name,
                 y: ipperformance,
@@ -27,11 +25,16 @@ $(document).ready(function()
             });
         }
 
-
+        for(var i=0;i<ipmechanismtarget.length;i++)
+        {
+            var iptargets =ipmechanismtarget[i].Target;
+            chartSeriesData.push({
+                y: iptargets,
+            });
+        }
         for (var i = 0; i < ipmechanismoutput.length; i++) {
             var  ip_ids=ipmechanismoutput[i].IP_ID
             var   series_name=ipmechanismoutput[i].Ipmechanismname;
-            var  ipoutput=ipmechanismoutput[i].ipmechanismtarget;
             var ipperformance=ipmechanismoutput[i].Performance
             ipmechanismperformance.push({
                 y: ipperformance,
@@ -39,24 +42,24 @@ $(document).ready(function()
                   }
 
 
-
-
         for (var i = 0; i < ipdistrictperformance.length; i++) {
              var  ip_ids=ipdistrictperformance[i].IP_ID
             var   district_series_name=ipdistrictperformance[i].District_name;
             var districtperfomance=ipdistrictperformance[i].totalperformance
+            var districtperfomance1=ipdistrictperformance[i].totalperformance
 
             districtdata.push({
                 name: district_series_name,
                 data: districtperfomance,
+                data1: districtperfomance1,
                 drilldown:ip_ids
             });
 
         }
-        for(var x=0;x < vmmcperformancedata[2].length;x++){
-             var district_ids=vmmcperformancedata[2][x].district_id;
-             var facilityname=vmmcperformancedata[2][x].facility_name;
-             var facilityperformance=vmmcperformancedata[2][x].facilitydata;
+        for(var x=0;x < vmmcperformancedata[3].length;x++){
+             var district_ids=vmmcperformancedata[3][x].district_id;
+             var facilityname=vmmcperformancedata[3][x].facility_name;
+             var facilityperformance=vmmcperformancedata[3][x].facilitydata;
 
             facilitydata.push({
                 name:facilityname,
@@ -64,7 +67,7 @@ $(document).ready(function()
                 drilldown:district_ids
             })
         }
-        console.log(districtdata)
+
         Highcharts.chart('ipmechanismtargetandperformance', {
             chart: {
                 type: 'column',
@@ -145,20 +148,30 @@ $(document).ready(function()
                     colorByPoint: false,
                     data: chartperformancedata,
                     drilldown:[chartperformancedata[0].drilldown,chartperformancedata[1].drilldown,chartperformancedata[2].drilldown,
-                               chartperformancedata[3].drilldown,chartperformancedata[4].drilldown,chartperformancedata[5].drilldown]
+                               chartperformancedata[3].drilldown,chartperformancedata[4].drilldown,chartperformancedata[5].drilldown,chartperformancedata[6].drilldown]
                 }
 
             ],
             drilldown: {
               series:
-              [{
+              [
+                  { name:"IDI KAMPALA",
                   id:chartperformancedata[0].drilldown, //IDI IPMEchanism
                   data:[
-                      {name:districtdata[0].name,y:districtdata[0].data,drilldown:facilitydata[0].drilldown},
-                      {name:districtdata[1].name,y:districtdata[1].data,drilldown:facilitydata[1].drilldown},
+                      {name:districtdata[0].name,y:districtdata[0].data,drilldown:facilitydata[1].drilldown,}
+                      ,{ type: 'column',
+                          color: 'White',
+                          name: 'Performance',
+                          y: 1,
+                          dataLabels:{
+                              pointFormat: '<span style="color:{series.color}"></span>({point.y}%)<br/>',
+                          },
+                          fillOpacity: 0,
+                          data: 1000
+                      },//kampala
+                          {name:districtdata[1].name,y:districtdata[1].data,drilldown:facilitydata[1].drilldown},
                   ],
-
-              },
+            },
                   {
                       id:chartperformancedata[1].drilldown, //RHSP
                       data:[
@@ -458,8 +471,6 @@ $(document).ready(function()
               ]
 
             },
-
-
 
         });
     })

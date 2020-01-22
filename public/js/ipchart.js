@@ -186,10 +186,9 @@ $(document).ready(function()
         var surgicalmethods =deviceArray[0];
         var devicetype =deviceArray[1];
 
-        console.log(devicetype);
         var options={
             chart: {
-                renderTo:'devicesused',
+                renderTo:'',
                 borderWidth:1
             },
 

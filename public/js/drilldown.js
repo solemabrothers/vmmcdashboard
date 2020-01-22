@@ -1,90 +1,378 @@
-// Create the chart
-Highcharts.chart('container', {
-    chart: {
-        type: 'column',
-        events: {
-            drilldown: function (e) {
-                if (!e.seriesOptions) {
 
-                    var chart = this,
-                        drilldowns = {
-                            Animals: {
-                                name: 'Animals',
-                                data: [
-                                    ['Cows', 2],
-                                    ['Sheep', 3]
-                                ]
-                            },
-                            Fruits: {
-                                name: 'Fruits',
-                                data: [
-                                    ['Apples', 5],
-                                    ['Oranges', 7],
-                                    ['Bananas', 2]
-                                ]
-                            },
-                            Cars: {
-                                name: 'Cars',
-                                data: [
-                                    ['Toyota', 1],
-                                    ['Volkswagen', 2],
-                                    ['Opel', 5]
-                                ]
+    $(document).ready(function() {
+
+        $.getJSON("drilldowns", function (performance) {
+            var chart;
+            var colors = Highcharts.getOptions().colors,
+
+                categories1 = ['IDI KAMPALA', 'RHSP MASAKA', 'BAYLOR RWENZORI', 'TASO SOROTI'],
+
+                name1 = 'Browser brands 1',
+
+                data1 = [{
+
+                    y: 55.11,
+
+                    color: colors[0],
+
+                    drilldown: {
+
+                        name: 'MSIE versions',
+
+                        categories: ['MSIE 6.0', 'MSIE 7.0', 'MSIE 8.0', 'MSIE 9.0'],
+
+                        data: [10.85, 7.35, 33.06, 2.81],
+
+                        color: colors[0]
+
+                    }
+
+                },
+                    {
+
+                        y: 21.63,
+
+                        color: colors[1],
+
+                        drilldown: {
+
+                            name: 'Firefox versions',
+
+                            categories: ['Firefox 2.0', 'Firefox 3.0', 'Firefox 3.5', 'Firefox 3.6', 'Firefox 4.0'],
+
+                            data: [0.20, 0.83, 1.58, 13.12, 5.43],
+
+                            color: colors[1]
+
+                        }
+
+                    },
+                    {
+
+                        y: 11.94,
+
+                        color: colors[2],
+
+                        drilldown: {
+
+                            name: 'Chrome versions',
+
+                            categories: ['Chrome 5.0', 'Chrome 6.0', 'Chrome 7.0', 'Chrome 8.0', 'Chrome 9.0',
+
+                                'Chrome 10.0', 'Chrome 11.0', 'Chrome 12.0'],
+
+                            data: [0.12, 0.19, 0.12, 0.36, 0.32, 9.91, 0.50, 0.22],
+
+                            color: colors[2]
+
+                        }
+
+                    },
+                    {
+
+                        y: 7.15,
+
+                        color: colors[3],
+
+                        drilldown: {
+
+                            name: 'Safari versions',
+
+                            categories: ['Safari 5.0', 'Safari 4.0', 'Safari Win 5.0', 'Safari 4.1', 'Safari/Maxthon',
+
+                                'Safari 3.1', 'Safari 4.1'],
+
+                            data: [4.55, 1.42, 0.23, 0.21, 0.20, 0.19, 0.14],
+
+                            color: colors[3]
+
+                        }
+
+                    },
+                    {
+
+                        y: 2.14,
+
+                        color: colors[4],
+
+                        drilldown: {
+
+                            name: 'Opera versions',
+
+                            categories: ['Opera 9.x', 'Opera 10.x', 'Opera 11.x'],
+
+                            data: [0.12, 0.37, 1.65],
+
+                            color: colors[4]
+
+                        }
+
+                    }];
+
+            var colors = Highcharts.getOptions().colors,
+
+                categories2 = ['MSIE', 'Firefox', 'Chrome', 'Safari', 'Opera'],
+
+                name2 = 'Browser brands 2',
+
+                data2 = [{
+
+                    y: 55.11,
+
+                    color: colors[0],
+
+                    drilldown: {
+
+                        name: 'MSIE versions',
+
+                        categories: ['MSIE 6.0', 'MSIE 7.0', 'MSIE 8.0', 'MSIE 9.0'],
+
+                        data: [10.85, 7.35, 33.06, 2.81],
+
+                        color: colors[0]
+
+                    }
+
+                },
+                    {
+
+                        y: 21.63,
+
+                        color: colors[1],
+
+                        drilldown: {
+
+                            name: 'Firefox versions',
+
+                            categories: ['Firefox 2.0', 'Firefox 3.0', 'Firefox 3.5', 'Firefox 3.6', 'Firefox 4.0'],
+
+                            data: [0.20, 0.83, 1.58, 13.12, 5.43],
+
+                            color: colors[1]
+
+                        }
+
+                    },
+                    {
+
+                        y: 11.94,
+
+                        color: colors[2],
+
+                        drilldown: {
+
+                            name: 'Chrome versions',
+
+                            categories: ['Chrome 5.0', 'Chrome 6.0', 'Chrome 7.0', 'Chrome 8.0', 'Chrome 9.0',
+
+                                'Chrome 10.0', 'Chrome 11.0', 'Chrome 12.0'],
+
+                            data: [0.12, 0.19, 0.12, 0.36, 0.32, 9.91, 0.50, 0.22],
+
+                            color: colors[2]
+
+                        }
+
+                    },
+                    {
+
+                        y: 7.15,
+
+                        color: colors[3],
+
+                        drilldown: {
+
+                            name: 'Safari versions',
+
+                            categories: ['Safari 5.0', 'Safari 4.0', 'Safari Win 5.0', 'Safari 4.1', 'Safari/Maxthon',
+
+                                'Safari 3.1', 'Safari 4.1'],
+
+                            data: [4.55, 1.42, 0.23, 0.21, 0.20, 0.19, 0.14],
+
+                            color: colors[3]
+
+                        }
+
+                    },
+                    {
+
+                        y: 2.14,
+
+                        color: colors[4],
+
+                        drilldown: {
+
+                            name: 'Opera versions',
+
+                            categories: ['Opera 9.x', 'Opera 10.x', 'Opera 11.x'],
+
+                            data: [0.12, 0.37, 1.65],
+
+                            color: colors[4]
+
+                        }
+
+                    }];
+
+            function setChart(name, categories, data, color) {
+
+                chart.xAxis[0].setCategories(categories);
+
+                chart.series[0].remove();
+
+                chart.addSeries({
+
+                    name: name,
+
+                    data: data,
+
+                    color: color || 'white'
+
+                });
+
+            }
+
+            chart = new Highcharts.Chart({
+
+                chart: {
+
+                    renderTo: 'container',
+
+                    type: 'column'
+
+                },
+
+                title: {
+
+                    text: 'Browser market share, April, 2011'
+
+                },
+
+                subtitle: {
+
+                    text: 'Click the columns to view versions. Click again to view brands.'
+
+                },
+
+                xAxis: {
+
+                    categories: categories1
+
+                },
+
+                yAxis: {
+
+                    title: {
+
+                        text: 'Total percent market share'
+
+                    }
+
+                },
+
+                plotOptions: {
+
+                    column: {
+
+                        cursor: 'pointer',
+
+                        point: {
+
+                            events: {
+
+                                click: function () {
+
+                                    var drilldown = this.drilldown;
+
+                                    if (drilldown) { // drill down
+                                        setChart(drilldown.name, drilldown.categories, drilldown.data, drilldown.color);
+
+                                    } else { // restore
+                                        setChart(name, categories, data);
+
+                                    }
+
+                                }
+
                             }
+
                         },
-                        series = drilldowns[e.point.name];
 
-                    // Show the loading label
-                    chart.showLoading('Simulating Ajax ...');
+                        dataLabels: {
 
-                    setTimeout(function () {
-                        chart.hideLoading();
-                        chart.addSeriesAsDrilldown(e.point, series);
-                    }, 1000);
+                            enabled: true,
+
+                            color: colors[0],
+
+                            style: {
+
+                                fontWeight: 'bold'
+
+                            },
+
+                            formatter: function () {
+
+                                return this.y + '%';
+
+                            }
+
+                        }
+
+                    }
+
+                },
+
+                tooltip: {
+
+                    formatter: function () {
+
+                        var point = this.point,
+
+                            s = this.x + ':<b>' + this.y + '% market share</b><br/>';
+
+                        if (point.drilldown) {
+
+                            s += 'Click to view ' + point.category + ' versions';
+
+                        } else {
+
+                            s += 'Click to return to browser brands';
+
+                        }
+
+                        return s;
+
+                    }
+
+                },
+
+                series: [{
+
+                    name: name1,
+
+                    data: data1,
+
+                    color: 'white'
+
+                },
+                    {
+
+                        name: name2,
+
+                        data: data2,
+
+                        color: 'white'
+
+                    }],
+
+                exporting: {
+
+                    enabled: false
+
                 }
 
-            }
-        }
-    },
-    title: {
-        text: 'Async drilldown'
-    },
-    xAxis: {
-        type: 'category'
-    },
+            });
 
-    legend: {
-        enabled: false
-    },
-
-    plotOptions: {
-        series: {
-            borderWidth: 0,
-            dataLabels: {
-                enabled: true
-            }
-        }
-    },
-
-    series: [{
-        name: 'Things',
-        colorByPoint: true,
-        data: [{
-            name: 'Animals',
-            y: 5,
-            drilldown: true
-        }, {
-            name: 'Fruits',
-            y: 2,
-            drilldown: true
-        }, {
-            name: 'Cars',
-            y: 4,
-            drilldown: true
-        }]
-    }],
-
-    drilldown: {
-        series: []
-    }
-});
+        });
+    });

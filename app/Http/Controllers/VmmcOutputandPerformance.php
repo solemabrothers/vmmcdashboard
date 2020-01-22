@@ -176,10 +176,9 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
 
     public function IpMechanismdrilldowntesting()
     {
-        $performanceandtarget=DB::select('SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget from implementingpartner
+        $performanceandtarget=DB::select('SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance from implementingpartner
                                                        inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
-                                                       inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
-where c.SummaryDate >= \'2019-10-01 00:00:00\' AND t.Year_of_target=\'2020\' group by ImplementingPartner');
+                                                where c.SummaryDate >= \'2019-10-01 00:00:00\' AND ImplementingPartner.IP_ID !=12  group by ImplementingPartner');
         $districtperformance=DB::select('SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
 AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
       AND c.SummaryDate >= \'2019-10-01\'  group by implementingpartner,d.district_id');
@@ -194,8 +193,12 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
                                                        inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
 where c.SummaryDate >= \'2019-10-01 00:00:00\' AND t.Year_of_target=\'2020\' group by ImplementingPartner');
 
+        $ipmechanismtarget=DB::select('SELECT i.Ip_name, SUM(ft.Total) as Target from facilitytargets ft
+    inner join implementingpartner i on ft.ImplementingPartner = i.IP_ID group by ft.ImplementingPartner');
+
 
         $combinedarray=array();
+        array_push($combinedarray,$ipmechanismtarget);
         array_push($combinedarray,$performanceandtarget);
         array_push($combinedarray,$districtperformance);
         array_push($combinedarray,$facilityperformance);
