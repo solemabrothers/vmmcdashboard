@@ -30,6 +30,8 @@
     <script type="text/javascript" charset="utf8" src="{{URL::asset('js/ipchart.js')}}"></script>
     <script type="text/javascript" charset="utf8" src="{{URL::asset('js/vmmcdashboard.js')}}"></script>
     <script type="text/javascript" charset="utf8" src="{{URL::asset('js/drilldown.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{URL::asset('js/filtereddata.js')}}"></script>
+
 
 
     <script src="https://code.highcharts.com/highcharts.js"></script>

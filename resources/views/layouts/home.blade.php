@@ -93,7 +93,6 @@
                     <span class=" info-box-icon bg-warning elevation-1"><i class="fa fa-wheelchair"></i></span>
 
                     <div class="info-box-content" data-toggle="modal" id="boxcontent" data-target="#adverseEffects">
-
                         <span class="info-box-text" >Adverse Events </span>
                         <span class="progress-description" id="footnotes">Click to View Details
                           </span>
@@ -104,13 +103,15 @@
                 </div>
                 <!-- /.info-box -->
             </div>
-            <!-- /.col -->
-
-            <!-- fix for small devices only -->
-
-
-            <!-- /.col -->
         </div>
+        @if(isset($errorMessageDuration))
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ $errorMessageDuration }}
+                {{ Input::get('title') }}
+            </div>
+    @endif
+
         <!-- /.row -->
 
         <div class="card" id="title">:IP Mechanism Perfomance FOR COP19 AS of {{date("d.M.Y")}}</div>

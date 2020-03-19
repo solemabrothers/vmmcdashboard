@@ -31,7 +31,7 @@ class Controller extends BaseController
  +SUM(c.NumberMildSwellingHaematoma)
   +SUM(c.NumberModerateInfection) As ClientsAffected
   FROM mets_vmmc.circumcision c   where c.SummaryDate >= \'2019-10-01\'');
-  $weeklyadverseeffects = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma)
+  $adverseeventsbyfacility = DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberSevereSwellingHaematoma)
 +SUM(c.NumberSevereAnaestheticRelatedEvent)+SUM(c.NumberSevereDamageToPenis)+SUM(c.NumberSevereExcessiveBleeding)
 +SUM(c.NumberSevereInfection)+SUM(c.NumberSeverePain)AS Severe,
     SUM(c.NumberMildExcessiveBleeding)+SUM(c.NumberMildSwellingHaematoma)+SUM(c.NumberModerateInfection)
@@ -41,7 +41,7 @@ class Controller extends BaseController
       AND c.SummaryDate >= \'2019-10-01\'  group by facility,implementingpartner
       HAVING  ClientsAffected !=0 OR Severe!=0');
 
-$HIVpositiveclients =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive
+$clientsHIVPositivebyfacility =DB::select('SELECT Ip.Ip_name, d.District_name, f.facility_name,SUM(c.NumberHIVPositive) as positive
 FROM mets_vmmc.circumcision c,mets_vmmc.facility f , mets_vmmc.implementingpartner Ip, mets_vmmc.district d
  WHERE  c.Facility=f.Facility AND c.ImplementingPartner= Ip.IP_ID  AND f.district_id= d.district_id
   AND c.SummaryDate >= \'2019-10-01\' group by c.Facility,c.ImplementingPartner
@@ -62,13 +62,13 @@ where c.SummaryDate >= \'2019-10-01\'');
 
         $totaltarget =DB::select('SELECT SUM(TARGET) as target from ipmechanismtargets t  where t.Year_of_target=\'2020\'');
 
- $totalnumbercircumscisedusingdevices=DB::select('select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >=\'2018-10-01\'');
+ $totalnumbercircumscisedusingdevices=DB::select('select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >=\'2019-10-01\'');
  $facilitiesusingdevices=DB::select('SELECT Ip.Ip_name,d.District_name,f.facility_name,f.Facility,SUM(c.NumberDeviceType) AS DevicesUsed
       FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
-      AND c.SummaryDate >= \'2018-10-01\'  group by facility,implementingpartner
+      AND c.SummaryDate >= \'2019-10-01\'  group by facility,implementingpartner
 HAVING DevicesUsed !=0');
         $totalperformance =number_format(($totalnumbercircumscised[0]->total/$totaltarget[0]->target)*100,2,'.','');
-       return view('layouts.home', compact('districts','ips','totalperformance','totaltarget','totalnumbercircumscised','weeklyadverseeffects','facilitiesusingdevices','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','HIVpositiveclients','numbersHIVpositive','clientsAffected','totalnumbercircumscisedusingdevices'));
+       return view('layouts.home', compact('districts','ips','totalperformance','totaltarget','totalnumbercircumscised','adverseeventsbyfacility','facilitiesusingdevices','SeverelyAffected','monthly_data','modelObjectJson','numbersHIVnegative','clientsHIVPositivebyfacility','numbersHIVpositive','clientsAffected','totalnumbercircumscisedusingdevices'));
     }
 
 

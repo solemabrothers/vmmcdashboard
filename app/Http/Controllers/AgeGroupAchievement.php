@@ -69,6 +69,7 @@ class AgeGroupAchievement extends Controller
         array_push($ageperformance,$agecategorynames);
         array_push($ageperformance,$agecategoryperformance);
         array_push($ageperformance,$agecategorytarget);
+
         return json_encode($ageperformance,JSON_NUMERIC_CHECK);
     }
 

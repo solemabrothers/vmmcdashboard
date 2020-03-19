@@ -15,16 +15,27 @@
                 <h4 class="modal-title">Filter</h4>
             </div>
             <div class="modal-body">
-                <form class="form-inline" method="GET" action="filterdata" id="filterdata">
+                <form class="form-inline" method="GET" action={{action('FilterData@index')}} id="filterdata">
                     <div class="form-group">
                         <table class="table" id="filtertable">
                             <tr>
                                 <td><label id="label">IMPLEMENTING MECHANISM</label></td>
                                 <td><select class="form-control form-control-lg" name="ips">
-                                        <option>National</option>
+                                        <option></option>
                                         @foreach($ips as $ip)
                                             {
                                             <option value="{{$ip->IP_ID}}">{{$ip->Ip_name}}</option>
+                                            }
+                                        @endforeach
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td><label id="label">IP DISTRICT</label></td>
+                                <td><select class="form-control form-control-lg" name="$districts">
+                                        <option></option>
+                                        @foreach($districts as $ipdistrict)
+                                            {
+                                            <option value="{{$ipdistrict->district_id}}">{{$ipdistrict->District_name}}</option>
                                             }
                                         @endforeach
                                     </select></td>
@@ -76,7 +87,6 @@
                 <table class="table table-hover">
                     <thead>
                     <tr class="table-primary">
-                        <th>IP</th>
                         <th>District</th>
                         <th>Facility</th>
                         <th th style="width: 100px;">Severe</th>
@@ -85,9 +95,8 @@
                     </thead>
                     <tbody>
 
-                    @foreach($weeklyadverseeffects as $effects)
+                    @foreach($adverseeventsbyfacility as $effects)
                         <tr>
-                            <td>{{$effects->Ip_name}}</td>
                             <td>{{$effects->District_name}}</td>
                             <td>{{$effects->facility_name}}</td>
                             <td>{{$effects->Severe}}</td>
@@ -122,7 +131,7 @@
                 <table class="table table-hover" id="table">
                     <thead>
                     <tr class="table-primary">
-                        <th>IP</th>
+{{--                        <th>IP</th>--}}
                         <th>District</th>
                         <th>Facility</th>
                         <th>Clients</th>
@@ -130,9 +139,9 @@
                     </thead>
                     <tbody>
 
-                    @foreach($HIVpositiveclients as $positiveclients)
+                    @foreach($clientsHIVPositivebyfacility as $positiveclients)
                         <tr>
-                            <td>{{$positiveclients->Ip_name}}</td>
+{{--                            <td>{{$positiveclients->Ip_name}}</td>--}}
                             <td>{{$positiveclients->District_name}}</td>
                             <td>{{$positiveclients->facility_name}}</td>
                             <td>{{$positiveclients->positive}}</td>
@@ -174,7 +183,7 @@
                     </thead>
                     <tbody>
 
-                    @foreach($weeklyadverseeffects as $effects)
+                    @foreach($adverseeventsbyfacility as $effects)
                         <tr>
                             <td>{{$effects->Ip_name}}</td>
                             <td>{{$effects->District_name}}</td>

@@ -3,7 +3,6 @@ $(document).ready(function()
     $.getJSON("drilldowns", function(performance) {
         var chartSeriesData = [];
         var districtdata =[];
-        var districtdata1 =[1000,2000];
         var facilitydata=[];
         var ipmechanismperformance=[];
         var chartperformancedata =[];
@@ -31,6 +30,7 @@ $(document).ready(function()
                 y: iptargets,
             });
         }
+
         for (var i = 0; i < ipmechanismoutput.length; i++) {
             var  ip_ids=ipmechanismoutput[i].IP_ID
             var   series_name=ipmechanismoutput[i].Ipmechanismname;
@@ -132,7 +132,7 @@ $(document).ready(function()
                    },
                 {
                     type: 'line',
-                    color: 'White',
+                    color: 'grey',
                     name: 'Performance',
                     yAxis: 1,
                     dataLabels:{
