@@ -30,16 +30,16 @@ class AgeGroupAchievement extends Controller
         $Between45And49= DB::table('circumcision')->whereRaw('SummaryDate >= \'2020-10-01\'')->sum('NumberCircumcisedBetween45And49');
         $Above45= DB::table('circumcision')->whereRaw('SummaryDate >= \'2020-10-01\'')->value(DB::raw("SUM(NumberCircumcisedBetween50And54+NumberCircumcisedBetween55And59+NumberCircumcised60andabove)"));
 
-        $Between10And14target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('10<14');
-        $Between15And19target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('15<19');
-        $Between20And24target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('20<24');
-        $Between26And30target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('25<29');
-        $Between31And34target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('30<34');
-        $Between35And39target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('35<39');
-        $Between40And44target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('40<44');
-        $Between45And49target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2020\'')->sum('45<49');
+        $Between10And14target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('10<14');
+        $Between15And19target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('15<19');
+        $Between20And24target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('20<24');
+        $Between26And30target = DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('25<29');
+        $Between31And34target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('30<34');
+        $Between35And39target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('35<39');
+        $Between40And44target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('40<44');
+        $Between45And49target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('45<49');
 
-        $Above50target= DB::table('ipmechanismtargets')->sum('50>');
+        $Above50target= DB::table('ipmechanismtargets')->whereRaw('Year_of_target=\'2021\'')->sum('50>');
 
        $Between10And14= new AgeGroupCategories('10-14',$Between10And14,$Between10And14target);
        $Between15And19= new AgeGroupCategories('15-19',$Between15And19,$Between15And19target);

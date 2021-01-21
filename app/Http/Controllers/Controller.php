@@ -63,7 +63,7 @@ group by IP_ID");
         $totalnumbercircumscised =DB::select("SELECT SUM(c.NumberCircumcised) As total FROM mets_vmmc.circumcision c
 where c.SummaryDate >= '$start_cop_year' ");
 
-        $totaltarget =DB::select('SELECT SUM(TARGET) as target from ipmechanismtargets t  where t.Year_of_target=\'2020\'');
+        $totaltarget =DB::select('SELECT SUM(TARGET) as target from ipmechanismtargets t  where t.Year_of_target=\'2021\'');
 
  $totalnumbercircumscisedusingdevices=DB::select("select SUM(NumberDeviceType) as DevicesUsed from circumcision c where c.SummaryDate >='$start_cop_year'");
 

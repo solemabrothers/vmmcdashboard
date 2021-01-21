@@ -45,7 +45,7 @@ public function IpMechanismPerfomanceandTarget()
     $performanceandtarget=DB::select("SELECT Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget from implementingpartner
                                                        inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
                                                        inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
-where c.SummaryDate >= '$start_cop_year' group by ImplementingPartner");
+where c.SummaryDate >= '$start_cop_year' and t.Year_of_target='2021' group by ImplementingPartner");
 
     $districtperformance=DB::select("SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
 AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
@@ -179,7 +179,7 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
         $start_cope_year='2020-10-01';
         $performanceandtarget=DB::select("SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance from implementingpartner
                                                        inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
-                                                where c.SummaryDate >='$start_cope_year' AND ImplementingPartner.IP_ID !=12  group by ImplementingPartner");
+                                                where c.SummaryDate >='$start_cope_year' AND ImplementingPartner.IP_ID !=13  group by ImplementingPartner");
         $districtperformance=DB::select("SELECT Ip.IP_ID,d.district_id, d.District_name,SUM(c.NumberCircumcised)
 AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner Ip,mets_vmmc.district d, mets_vmmc.facility f WHERE c.ImplementingPartner=Ip.IP_ID AND c.Facility=f.Facility AND f.district_id=d.district_id
       AND c.SummaryDate >= '$start_cope_year'  group by implementingpartner,d.district_id");
@@ -192,10 +192,10 @@ AS totalperformance FROM mets_vmmc.circumcision c,mets_vmmc.implementingpartner 
         $ipmechanismoutput=DB::select("SELECT implementingpartner.IP_ID, Ip_name As Ipmechanismname, sum(NumberCircumcised) as ipmechanismperformance,TARGET as ipmechanismtarget,ROUND((sum(NumberCircumcised)/TARGET*100),2) As Performance from implementingpartner
                                                        inner join circumcision c on implementingpartner.IP_ID = c.ImplementingPartner
                                                        inner join ipmechanismtargets t on implementingpartner.IP_ID = t.IP_ID
-where c.SummaryDate >='$start_cope_year' AND t.Year_of_target=\"2020\" group by ImplementingPartner");
+where c.SummaryDate >='$start_cope_year' AND t.Year_of_target=\"2021\" group by ImplementingPartner");
 
         $ipmechanismtarget=DB::select('SELECT i.Ip_name, SUM(ft.Total) as Target from facilitytargets ft
-    inner join implementingpartner i on ft.ImplementingPartner = i.IP_ID group by ft.ImplementingPartner');
+    inner join implementingpartner i on ft.ImplementingPartner = i.IP_ID where ft.Year_of_Target=2021 group by ft.ImplementingPartner');
 
 
         $combinedarray=array();
